@@ -1,0 +1,207 @@
+---
+title: "American dream"
+author: "Panawe Mewenemesse"
+date: "2023-03-30"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+
+
+# Uploading required packages
+
+```{r}
+library(tidyverse) # for ggplot
+library(usmap) # to get maps
+library(janitor) # for clean_names
+library(ggeasy) # making ggplot customisation easy
+library(gganimate) # for animating map by year
+library(transformr) # for gganimate
+library(patchwork) # to patch plots together
+library(ggplot2)
+library(reshape2)
+library(tidyr)
+library(dplyr)
+library(gridExtra)
+library(grid)
+
+df <- read.csv("C:/Users/mewej/OneDrive/Documents/INTRO TO DATA SCIENCE/DREAM/dream.csv", header=T,check.names=F)
+
+head(df)
+```
+
+
+```{r}
+
+df2 <- melt(df, id = c("GeoFips", "State")) %>%
+rename("state" = "State")
+head(df2)
+
+```
+
+
+# Subset our data
+
+
+```{r}
+year1990 <- df2 %>%
+  filter(variable == 1990)
+
+
+year2000 <- df2 %>%
+  filter(variable == 2000)
+
+
+year2010 <- df2 %>%
+  filter(variable == 2010)
+
+
+year2021 <- df2 %>%
+  filter(variable == 2021)
+
+```
+
+# Fill the map with our data
+
+```{r}
+
+p1 <- plot_usmap(data = year1990, values = "value", labels=FALSE)
+
+p2 <- plot_usmap(data = year2000, values = "value", labels=FALSE)
+
+p3 <- plot_usmap(data = year2010, values = "value", labels=FALSE)
+
+p4 <- plot_usmap(data = year2021, values = "value", labels=FALSE)
+
+```
+
+# State annual personal income summary: personal income, population, per capita personal income
+# Per capita personal income (Dollars)
+
+```{r}
+
+
+p5 <- plot_usmap(data = year1990, values = "value", labels=FALSE) +
+  scale_fill_continuous(low = "white", high = "red", 
+                         name = "income", 
+                        limits = c(1000,100000)) +
+  easy_move_legend(to = c("right")) +
+  labs(title = "Per capita personal income in 1990") +
+  theme(panel.background = element_rect(colour = "black"))
+
+
+p6 <- plot_usmap(data = year2000, values = "value", labels=FALSE) +
+  scale_fill_continuous(low = "white", high = "red", 
+                         name = "income", 
+                        limits = c(1000,100000)) +
+  easy_move_legend(to = c("right")) +
+  labs(title = "Per capita personal income in 2000") +
+  theme(panel.background = element_rect(colour = "black"))
+
+
+p7 <- plot_usmap(data = year2010, values = "value", labels=FALSE) +
+  scale_fill_continuous(low = "white", high = "red", 
+                         name = "income", 
+                        limits = c(1000, 100000)) +
+  easy_move_legend(to = c("right")) +
+  labs(title = "Per capita personal income in 2010") +
+  theme(panel.background = element_rect(colour = "black"))
+
+
+p8 <- plot_usmap(data = year2021, values = "value", labels=FALSE) +
+  scale_fill_continuous(low = "white", high = "red", 
+                         name = "income", 
+                        limits = c(1000,100000)) +
+  easy_move_legend(to = c("right")) +
+  labs(title = "Per capita personal income in 2021") +
+  theme(panel.background = element_rect(colour = "black"))
+
+p9 <- p5 + p6 + p7 + p8
+
+p9
+
+
+p10 <- p6 + p7 + p8
+
+p10
+
+p6
+
+p7
+
+p8
+
+```
+
+Personal income is income that people get from wages and salaries, Social Security and other government benefits, dividends and interest, business ownership, and other sources. 
+
+Per capita personal income is total personal income divided by total midyear population. These intercensal population figures for 2010 to 2019 are tied to the Census Bureau decennial counts for 2010 and 2020 to create consistent time series that are used to prepare per capita personal income statistics.
+
+Americans per capita personal income has doubled over the last three decades. As expected, states in the Mid-Atlantic, Northeast, and Hawaii are among states with highest per capita personal income. 
+
+
+```{r}
+wea <- read.csv("C:/Users/mewej/OneDrive/Documents/INTRO TO DATA SCIENCE/share_wealth_us.csv")
+```
+
+## Creating bar Plots
+
+```{r}
+
+weaplot <- ggplot(data = wea, aes(x = reorder(State, SNW), y = SNW, fill = State)) + 
+   geom_bar(stat = "identity") + 
+   coord_flip()+
+   labs(x = "State", y = "Share of Nationwide Wealth (%)", 
+    caption = "Source: 2022 wealth estimates from ITEP Microsimulation Tax Model",
+    bottom = textGrob("grid caption", x = 1, 
+                                hjust = 1, gp = gpar(fontface = 3L, fontsize = 9)))  +
+  theme(legend.position = "none") 
+weaplot
+
+```
+
+From the above figure, we can deduct that extreme wealth is highly concentrated geographically. Nearly a third of nationwide wealth is held by families living in New York and California. Another 18 percent belongs to residents of Texas and Florida. In sum, this means that more than half of nationwide extreme wealth is held by the residents of just four states. These states are home to less than half (46 percent) of the U.S. population.
+
+
+# Assets by wealth percentile group in 2022
+
+```{r}
+compo <- read.csv("C:/Users/mewej/OneDrive/Documents/INTRO TO DATA SCIENCE/DREAM/components.csv") 
+
+compo <- rename(compo, Top1 = `Top.0.1.`, Top2 = `X99.99.9.`, Top3 = `X90.99.`, middle = `X50.90.`, bottom50 = `Bottom.50.`)
+head(compo)
+```
+
+
+```{r}
+compomelt <- pivot_longer(compo, c("Top1", "Top2", "Top3", "middle", "bottom50"))
+
+compomelt <- rename(compomelt, "percentile_group" = "name", "percent" = "value")
+
+compomelt2 <- compomelt
+compomelt2$percentile_group <- factor(compomelt2$percentile_group, levels = c("Top1", "Top2", "Top3", "middle", "bottom50"))
+                           
+
+yo <- ggplot(data = compomelt2, aes(x = percentile_group, y = percent, fill = Wealth.component)) + 
+  geom_bar(stat = "identity") +
+  labs(caption = "Top1 =Top 0.1%, Top2 =99-99.9%, Top3 =90-99%, middle =50-90%, bottom50 =Bottom 50%") 
+
+yo
+
+```
+
+
+Assets by wealth percentile group distribution shows a higher interest for real state from the bottom 50% of the population compared to the top 0.1% that has corporate equities and mutual fund shares as main asset. Extremely wealthy households definitely has a total different composition of wealth by asset type compared to households in the bottom percentile.   
+
+----------------Reference-----------------------
+
+Figure1: Per capita personal income from 2000 to 2021
+Source:U.S. Bureau of Economic Analysis, "SAINC1 State annual personal income summary: personal income, population, per capita personal income" 
+
+Figure2: "Share of Nationwide Extreme Wealth Found in Each State"
+Source: 2022 wealth estimates from ITEP Microsimulation Tax Model and 2021 population estimates from U.S. Census Bureau
+
+Figure3: Assets by wealth percentile group in 2021:Q4
+Source: https://www.federalreserve.gov/releases/z1/dataviz/dfa/compare/chart/#quarter:129;series:Assets;demographic:networth;population:all;units:shares
+
