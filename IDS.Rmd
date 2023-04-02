@@ -1,0 +1,81 @@
+
+```{r}
+library(tidyverse)
+real_median_income <- read.csv('/Users/collindougherty/Downloads/MEHOINUSA672N.csv')
+median_income <- read.csv('/Users/collindougherty/Downloads/MEFAINUSA646N.csv')
+income_lowest_50 <- read.csv('/Users/collindougherty/Downloads/WFRBLB50107.csv')
+income_share <- read.csv('/Users/collindougherty/Downloads/dfa-networth-shares.csv')
+income_share <- income_share %>% mutate(Category = ifelse(Category == "TopPt1" | Category == "RemainingTop1", "Top1", Category))
+income_share <- income_share %>% filter(Date > 2000)
+
+# Create a new column with renamed categories
+income_share$Category <- ifelse(income_share$Category == "Top1", "Top 1%",
+                                               ifelse(income_share$Category == "Next9", "Next 9%", 
+                                                      ifelse(income_share$Category == "Next40", "Next 40%", 
+                                                             ifelse(income_share$Category == "Bottom50", "Bottom 50%", 
+                                                                    income_share$Category))))
+```
+
+```{r}
+library(ggplot2)
+real_median_income$DATE <- as.Date(real_median_income$DATE)
+real_median_income <- real_median_income %>% filter(DATE > "1999-01-01")
+ggplot(data = real_median_income, aes(x=DATE, y=MEHOINUSA672N)) + 
+  geom_line(color = "Dark Green") +
+  labs(x = 'Year', y = 'Real Median Income', title=element_text(face = "bold", size = 14, "Real Median Income Over Time, US"), subtitle = "Even when adjusting for inflation, Americans are making more than ever.") +
+  theme_minimal()
+```
+
+```{r}
+library(zoo)
+library(ggplot2)
+income_share$Date <- as.yearqtr(income_share$Date, format = "%Y:Q%q")
+
+#income_share <- income_share %>% mutate(ifelse(Category == "TopPt1"))
+
+income_share_summed <- aggregate(Net.worth ~ Date + Category, data = income_share, sum)
+
+# Create a ggplot object with Bottom50 net worth over time
+ggplot(income_share_summed, aes(x = Date, y = Net.worth, color = Category)) +
+  geom_line() +
+  labs(x = "Date", y = "Percentage", title = "Share of Net Worth By Economic Class") +
+  theme_minimal()
+```
+
+```{r}
+income_share_summed <- aggregate(Consumer.credit ~ Date + Category, data = income_share, sum)
+# Create a ggplot object with Bottom50 net worth over time
+ggplot(income_share_summed, aes(x = Date, y = Consumer.credit, color = Category)) +
+  geom_line() +
+  labs(x = "Date", y = "Percentage", title = "Share of Consumer Credit by Economic Class") +
+  theme_minimal()
+```
+
+```{r}
+income_share_summed <- aggregate(Home.mortgages ~ Date + Category, data = income_share, sum)
+# Create a ggplot object with Bottom50 net worth over time
+ggplot(income_share_summed, aes(x = Date, y = Home.mortgages, color = Category)) +
+  geom_line() +
+  labs(x = "Date", y = "Percentage", title = "Share of Mortgages by Economic Class") +
+  theme_minimal()
+```
+
+```{r}
+income_share_summed <- aggregate(Assets ~ Date + Category, data = income_share, sum)
+# Create a ggplot object with Bottom50 net worth over time
+ggplot(income_share_summed, aes(x = Date, y = Assets, color = Category)) +
+  geom_line() +
+  labs(x = "Date", y = "Percentage of all Net Worth in US", title = "Share of Assets by Economic Class") +
+  theme_minimal()
+```
+
+
+```{r}
+median_income$DATE <- as.Date(median_income$DATE)
+median_income <- median_income %>% filter(DATE > "1999-01-01")
+ggplot(data = median_income, aes(x=DATE, y=MEFAINUSA646N)) + 
+  geom_line(color = "Dark Green") +
+  labs(x = 'Year', y = 'Median Income', title=element_text(face = "bold", size = 14, "Median Income Over Time, US"), subtitle = "Americans are making more than ever.") +
+  theme_minimal()
+```
+
