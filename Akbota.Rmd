@@ -1,0 +1,171 @@
+---
+title: "The American Dream: A Promise of Upward Mobility"
+author: "Akbota Atibayeva, Colin Dougherty, Fidel Nkwocha, Panawe Mewenemesse, Jerry Gallagher"
+output: pdf_document
+date: "2023-04-02"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\section{Introduction}
+\subsection{Background}
+\subsection{Motivation}
+\subsection{Research question (s)}
+
+
+\section{Data}
+\subsection{Data background and sources}
+\subsection{Brief description of data}
+
+
+\section{Exploratory Data Analysis}
+\subsection{Data cleaning}
+Cleaning of income data (tableA2.csv) has comprised several steps. Besides manual cleaning of the data, it has been explored for NAs, then they have been omitted. In general, the data was filtered, selected reshaped (melted) and merged (full_join) to efficiently produce visualizations.The class of certain columns were changed to numeric or to factor. Some of the column names were renamed. 
+
+The data sets 'home' and 'home_price' were basically clean. However, the most challenging part in working with those data was changing class type from character to date. Since usual codes did not work, other approaches were implemented and data were successfully visualized.   
+
+\subsection{Data summary}
+
+```{r, echo=FALSE, message=FALSE}
+rm(list = ls(all.names = TRUE))
+cat("\014")
+library(skimr)
+library(data.table)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(kableExtra)
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+income = fread('tableA2.csv')
+
+income$Number_thousands = as.numeric(income$Number_thousands)
+income$Median_income = as.numeric(income$Median_income)
+income$Margin_of_error_for_median = as.numeric(income$Margin_of_error_for_median)
+income$Mean_income = as.numeric(income$Mean_income)
+income$Margin_of_error_for_mean = as.numeric(income$Margin_of_error_for_mean)
+
+i= income %>% 
+  select(-Margin_of_error_for_median, -Margin_of_error_for_mean) %>% 
+  na.omit()  
+
+skim (i)
+```
+
+
+\subsection{Results and Discussion}
+
+Since one of the measures of upward mobility is healthy economy and in turn economic advancement is highly dependent on job advancement, real median household income of different races over time has been demonstrated in Figure 1. Real income has been adjusted for inflation, so in order to effectively assess upward mobility, the effect of inflation to time has been eliminated. It can be clearly observed from Figure 1 that median income of people increased over time by reaching more than $100,000 for Asians. Also, Asians as immigrants (at least first generation of Asians was immigrants) presented the highest median real income, which can determine that by hard work even people from lower class (if we consider immigrants as lower class than local established people) can achieve wealth (which is a main concept of upward mobility). Figure 1 showed the slope of the lines for each race, which established the median real income increase between 2000-2021. The results are consistent with the graph that shows people attained higher income over time. It has to be noted that working population of U.S (approximately 131,202 people for 2021) was used to obtain median income value for each year and for each race.
+
+```{r, figure1, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household income over time for different races"}
+
+income = fread('tableA2.csv') %>% 
+  tibble 
+
+df= income %>% 
+  select(-Margin_of_error_for_median, -Margin_of_error_for_mean) %>% 
+  na.omit() %>% 
+  filter(!Races=='Blackd', !Races =='Asiand', !Races == 'Whited', !Races=='All races', !Races=='American Indian and Alaska native comb') %>% 
+  filter(between(Year, 2000,2021))
+
+ggplot(df, aes (Year, Median_income, color=Races)) +
+         geom_line(linetype='dashed', size=1)+
+         theme_bw() +
+         labs(x = "Year", y = "Median income ($)", fill="Races") +
+         scale_x_continuous(breaks=seq(1993,2021,by=4))+
+         scale_fill_brewer(palette = "Set2")
+
+```
+```{r, table1, echo=FALSE, message=FALSE, warning=FALSE}
+year93 = df %>% 
+  select(Year, Median_income, Races) %>% 
+  filter(Year==2000) 
+
+year21 = df %>% 
+  select(Year, Median_income, Races) %>% 
+  filter(Year==2021)
+
+final = full_join(year93,year21, by = "Races" )
+
+final %>% 
+  mutate('Median income increase' = round ((Median_income.y - Median_income.x)/(2021-2000), digits=0)) %>% 
+  select(Races,'Median income increase')  %>% 
+  filter (!Races=='Mixed races') %>% 
+  kable(align=rep('c', 3), format = "pandoc", booktabs = TRUE, caption = "Real median income increase between 2000-2021 (slope of the lines) for each race", escape = FALSE)
+
+```
+
+Real income of people differ in a certain range. Figure 2 represented percent distribution of household from different races having different range of annual income. The first message of the figures is that comparatively and generally, having small income as between $15,000 to $25,000 or $35,000 to $50,000 decreased over time, which can indicate percent distribution of people who are earning more increased. That can be observed from the income range $150,000 to $200,000 and over $200,000. More than 20% of Asians' annual income is more than $200,000. The sharp increase in number of people who earn more than $200,000 can be noticed after 2013 for all races. Again, that can prove the concept of upward mobility. 
+
+```{r, figure2, echo=FALSE, message=FALSE, warning = FALSE, fig.cap="Percent distribution of real income between certain ranges for different races over time"}
+dfl = pivot_longer(df, cols = c('15,000_to_24,999' , '35,000_to_49,999', '150,000_to_199,999',  '200,000_and_over'))
+
+dfl$name= as.factor(dfl$name)
+
+ggplot(dfl, aes (Year, value, color=Races)) +
+         facet_wrap(~factor(name, levels = c('15,000_to_24,999', '35,000_to_49,999', '150,000_to_199,999', '200,000_and_over')))+
+         geom_line(size=1)+
+         theme_bw() +
+         scale_x_continuous(breaks=seq(1993,2021,by=4))+
+         labs(x = "Year", y = "Percent distribution", fill="Races") 
+```
+
+
+Since homeownership is a key factor in establishing upward or downward mobility of Americans, Figure 3 represented homeownership rate over time. The housing bubble was a period of rapid growth in the housing market in the early 2000s, fueled by low interest rates and lax lending standards. However, it ultimately led to a crash in 2008, resulting in the foreclosure of millions of homes and a nationwide economic crisis. That trend was followed by The Foreclosure Crisis (2007-2012). The foreclosure crisis was a result of the housing bubble bursting, which led to a high number of foreclosures and a decline in home values. It resulted in many families losing their homes, and the government had to intervene with programs such as the Home Affordable Modification Program (HAMP) and the Home Affordable Refinance Program (HARP). We can observe a grow in homeownership rate after 2015, which did not last long because of the COVID. The COVID-19 pandemic caused a significant economic downturn, resulting in job losses and financial hardship for many households. It also led to a moratorium on evictions and foreclosures to prevent further economic instability. Although a gradual increase in homeownership rate can be observed after 2021, it cannot explicitly prove upward mobility or downward mobility of the population. The homeownership rate can significantly be affected by several factors as mentioned above and plus the price of the houses which considerably increased over time due to economic crisis. The comprehensive demonstration of that tendency was provided in Figure 4. 
+
+```{r, figure3, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Homeownership rate in the United States from 1993 to 2022"}
+home = read.csv('home.csv')
+
+home$DATE = strptime(as.character(home$DATE), "%m/%d/%Y") %>% 
+  as.Date((home$DATE), format = "%d-%m-%y")
+
+home %>% 
+  filter(DATE>'1999-07-01') %>% 
+  ggplot(aes (DATE, Percent)) +
+         geom_line(size=1)+
+         theme_bw() +
+         labs(x = "Year", y = "Homeownership rate") +
+         scale_x_date(date_breaks = "36 months", date_labels = "%Y")+
+         scale_fill_brewer(palette = "Set2")
+
+```
+
+```{r, figure4, echo=FALSE, message=FALSE, fig.cap="Average sales price of houses sold for the United States"}
+home_price = read.csv('home_price.csv')
+
+home_price$Date = strptime(as.character(home_price$Date), "%m/%d/%Y") %>% 
+  as.Date((home_price$Date), format = "%d-%m-%y")
+
+
+home_price %>% 
+  filter(Date>'1999-10-01') %>% 
+  ggplot(aes (Date, Price)) +
+         geom_line(size=1)+
+         theme_bw() +
+         labs(x = "Year", y = "Sales price of houses ($)") +
+         scale_x_date(date_breaks = "36 months", date_labels = "%Y")+
+         scale_fill_brewer(palette = "Set2")
+
+```
+
+
+
+\section{Future work}
+In a scope of this project, an interactive dashboard tool will be created to obtain answers to all our research questions. We will use R programming language and R Studio platform to materialize this dashboard. The dashboard will be hosted at Shinyapps server for ease of public access.
+
+
+
+\section{Updated timeline}
+```{r, echo=FALSE, message=FALSE}
+df=read.csv("Project.csv")
+
+kable(df, align = "l")|>
+ column_spec(1, width = "3cm")|>
+ column_spec(2, width = "4cm")|>
+ column_spec(3, width = "10cm")
+```
+
