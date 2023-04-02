@@ -1,0 +1,150 @@
+---
+title: "American Dream"
+author: "Jerry Gallagher"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+suppressMessages(library(tidyverse))
+suppressPackageStartupMessages(library(reshape2))
+suppressPackageStartupMessages(library(scales))
+suppressPackageStartupMessages(library(dplyr))
+library(ggplot2)
+options(scipen = 999)
+```
+
+## Networth by Race / Ethnicity
+Data was collected for the years from 1994 until 2020 and merged into a single excel file. The source data is available from https://www.census.gov/topics/income-poverty/wealth/data/tables.html 
+The older data was in PDF's and the newer data was in xls. Relevent data was combined into a single spreadsheet named CombinedNetByRace.xlsx. The median row was skipped and the columns where relabeled. After relabel columns were melted together for ease of use with only race_ethnicity being keep. Columns were then relabeled again and converted to appropriate data types. A line plot was then created from ggplot2. 
+
+```{r race}
+
+combinedNetworthByRace <- read_excel("~/projects/americandream/CombinedNetByRace.xlsx",
+                                     col_names = TRUE, skip = 1)
+colnames(combinedNetworthByRace) <- c("race_ethnicity","2000","2002","2004","2005","2009",
+                                      "2010","2011","2013","2014","2015","2016", "2017",
+                                      "2018","2019","2020")
+
+combinedNetByRace_wide <- melt(combinedNetworthByRace, id='race_ethnicity')
+colnames(combinedNetByRace_wide) <-c("race_ethnicity","year","networth")
+combinedNetByRace_wide$race_ethnicity <-as.factor(combinedNetByRace_wide$race_ethnicity)
+combinedNetByRace_wide$year <- as.Date(combinedNetByRace_wide$year,format="%Y")
+suppressWarnings(combinedNetByRace_wide$networth <-as.numeric(combinedNetByRace_wide$networth, na.rm = TRUE))
+
+wealthByRace_chart <- ggplot(combinedNetByRace_wide, aes(x = year, 
+                                                          y = networth, 
+                                                          group = race_ethnicity,
+                                                          color = race_ethnicity )) + 
+ geom_line() + labs(title = "Median Networth by year Grouped By Race/Ethnicity",
+                     x = "Year", y = "Median Net Worth", 
+                     color = "Race/Ethnicity") + theme_minimal()+theme_bw()
+wealthByRace_chart + scale_y_continuous(limit = c(0,250000),labels = scales::comma)
+```
+
+In this chart you can see the increase in wealth by Race / Ethnicity over the years. It shows that general the accumulation of wealth has went up. Some Races / Ethnicities have benefited more than others, but overall through out time all races have increased in median wealth. 
+
+```{r race_facet}
+
+
+#faceted by race
+wealthByRace_facetchart <- ggplot(combinedNetByRace_wide, aes(x = year, 
+                                                          y = networth, 
+                                                          group = race_ethnicity,
+                                                          color = race_ethnicity )) + 
+  geom_line() + labs(title = "Median Networth by year",
+                     subtitle = "faceted by Race",
+                     x = "Year", y = "Median Net Worth", 
+                     color = "Race/Ethnicity") + theme_bw() + theme(legend.position = "bottom",axis.text.x = element_text(angle=45)) + 
+  facet_grid(cols = vars(race_ethnicity)) 
+wealthByRace_facetchart + scale_y_continuous(limit = c(0,250000), labels = scales::comma)
+
+```
+
+
+## Networth by Age of Householder
+Data was collected for the years from 1994 until 2020 and merged into a single excel file. The source data is available from https://www.census.gov/topics/income-poverty/wealth/data/tables.html 
+The older data was in PDF's and the newer data was in xls. Relevent data was combined into a single spreadsheet named CombinedNetByAge.xlsx.  The median row was skipped and the columns where relabeled. After relabel columns were melted together for ease of use with only age_house being keep. Columns were then relabeled again and converted to appropriate data types. A line plot was then created from ggplot2.  
+
+```{r age}
+
+combinedNetByAge <- read_excel("~/projects/americandream/CombinedNetByAge.xlsx",col_names = TRUE, skip = 2)
+colnames(combinedNetByAge) <- c("age_house","2000","2002","2004","2005","2009","2010","2011","2013","2014","2015","2016","2017","2018","2019","2020")
+
+combinedNetByAge_wide <- melt(combinedNetByAge, id='age_house')
+colnames(combinedNetByAge_wide) <-c("age_house","year","networth")
+combinedNetByAge_wide$age_house <-as.factor(combinedNetByAge_wide$age_house)
+combinedNetByAge_wide$year <- as.Date(combinedNetByAge_wide$year,format="%Y")
+suppressWarnings(combinedNetByAge_wide$networth <-as.numeric(combinedNetByAge_wide$networth, na.rm = TRUE))
+
+
+wealthByAge_chart <- ggplot(combinedNetByAge_wide, aes(x = year, 
+                                                       y = networth, 
+                                                       group = age_house,
+                                                       color = age_house )) + 
+  geom_line() + labs(title = "Median Networth by year Grouped By Age",
+                     x = "Year", y = "Median Networth", 
+                     color = "Age of Householder") + theme_bw()
+wealthByAge_chart + scale_y_continuous(limits = c(0,350000), labels = scales::comma)
+```
+
+In this chart you can see the increase in wealth by Age over the years. It shows that general the accumulation of wealth goes up as time progresses. The older you are the more time you have to attain wealth. It also show that post retirement age wealth goes down. This is indicative of wealth being used to instead of income to pay for living expenses. 
+
+```{r age_facet}
+#faceted by Age
+wealthByAge_facetchart <- ggplot(combinedNetByAge_wide, aes(x = year, 
+                                                            y = networth, 
+                                                            group = age_house,
+                                                            color = age_house )) + 
+  geom_line() + labs(title = "Median Networth by year",
+                     subtitle = "faceted by Age",
+                     x = "Year", y = "Median Net Worth", 
+                     color = "Age House") +  theme_bw() + theme(legend.position = "bottom",axis.text.x = element_text(angle=45)) +
+  facet_grid(cols = vars(age_house))
+wealthByAge_facetchart + ylim(0,250000) + scale_y_continuous(labels = scales::comma)
+
+```
+
+## Networth by Educational attainment
+Data was collected for the years from 1994 until 2020 and merged into a single excel file. The source data is available from https://www.census.gov/topics/income-poverty/wealth/data/tables.html 
+The older data was in PDF's and the newer data was in xls. Relevent data was combined into a single spreadsheet named CombinedNetByEd.xlsx. The median row was skipped and the columns where relabeled. After relabel columns were melted together for ease of use with only ed_house being keep. Columns were then relabeled again and converted to appropriate data types. A line plot was then created from ggplot2. 
+
+```{r ed}
+
+
+combinedNetByEd <- read_excel("~/projects/americandream/CombinedNetByEd.xlsx",col_names = TRUE, skip = 1)
+colnames(combinedNetByEd) <- c("ed_house","2000","2002","2004","2005","2009","2010","2011","2013","2014","2015","2016","2017","2018","2019","2020")
+
+combinedNetByEd_wide <- melt(combinedNetByEd, id='ed_house')
+colnames(combinedNetByEd_wide) <-c("ed_house","year","networth")
+combinedNetByEd_wide$ed_house <-as.factor(combinedNetByEd_wide$ed_house)
+combinedNetByEd_wide$year <- as.Date(combinedNetByEd_wide$year,format="%Y")
+suppressWarnings(combinedNetByEd_wide$networth <-as.numeric(combinedNetByEd_wide$networth, na.rm = TRUE))
+
+wealthByEd_chart <- ggplot(combinedNetByEd_wide, aes(x = year, 
+                                                     y = networth, 
+                                                     group = ed_house,
+                                                     color = ed_house )) + 
+  geom_line() + labs(title = "Median Networth by year Grouped By Education",
+                     x = "Year", y = "Median Networth", 
+                     color = "Education of Householder") + theme_bw()
+wealthByEd_chart + scale_y_continuous(limits = c(0,450000),labels = scales::comma)
+```
+In this chart you can see the largest change in wealth among the populations. It indicates that on average, those with more education accrue and maintain more wealth. 
+```{r ed facet}
+
+#faceted by ed
+wealthByEd_facetchart <- ggplot(combinedNetByEd_wide, aes(x = year, 
+                                                          y = networth, 
+                                                          group = ed_house,
+                                                          color = ed_house )) + 
+  geom_line() + labs(title = "Median Networth by year",
+                     subtitle = "faceted by Education",
+                     x = "Year", y = "Median Net Worth", 
+                     color = "Education") + theme_bw() + theme(legend.position = "bottom",axis.text.x = element_text(angle=45)) + 
+  facet_grid(cols = vars(ed_house))
+wealthByEd_facetchart + ylim(0,250000) + scale_y_continuous(labels = scales::comma)
+
+```
