@@ -164,8 +164,7 @@ combinedNetByEd_wide$year <- as.Date(combinedNetByEd_wide$year,format="%Y")
 suppressWarnings(combinedNetByEd_wide$networth <-as.numeric(combinedNetByEd_wide$networth, na.rm = TRUE))
 
 wealthByEd_chart <- ggplot(combinedNetByEd_wide, aes(x = year, y = networth, group = ed_house, color = ed_house )) + 
-  geom_line() + labs(x = "Year", y = "Median income ($)", 
-                     color = "Education of Householder") + theme_bw()
+  geom_line() + labs(x = "Year", y = "Median income ($)", color = "Education of Householder") + theme_bw()
 wealthByEd_chart + scale_y_continuous(limits = c(0,450000),labels = scales::comma)
 ```
 Another measures of upward mobility in a healthy economy is wealth, and education plays a crucial role in determining a person's wealth. Therefore, it is important to examine the relationship between education and wealth over time. Figure 3 displays the real median household netweorth of population groups with different education levels over time, with adjustments made for inflation to eliminate its effect on assessing upward mobility. The graph clearly illustrates that median household wealth increased over time, with the highly educated achieving the highest median real wealth. A Masters or professional degree had the highest median real wealth, suggesting that hard work can lead to wealth, which is a critical component of upward mobility. 
