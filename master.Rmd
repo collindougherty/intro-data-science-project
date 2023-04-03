@@ -1,0 +1,598 @@
+---
+title: "The American Dream: A Promise of Upward Mobility"
+author: "Akbota Atibayeva, Colin Dougherty, Fidel Nkwocha, Panawe Mewenemesse, Jerry Gallagher"
+output: pdf_document
+date: "2023-04-02"
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\section{Introduction}
+\subsection{Background}
+\subsection{Motivation}
+\subsection{Research question (s)}
+
+
+\section{Data}
+\subsection{Data background and sources}
+\subsection{Brief description of data}
+
+
+\section{Exploratory Data Analysis}
+\subsection{Data cleaning}
+Cleaning of income data (tableA2.csv) has comprised several steps. Besides manual cleaning of the data, it has been explored for NAs, then they have been omitted. In general, the data was filtered, selected reshaped (melted) and merged (full_join) to efficiently produce visualizations.The class of certain columns were changed to numeric or to factor. Some of the column names were renamed. 
+
+The data sets 'home' and 'home_price' were basically clean. However, the most challenging part in working with those data was changing class type from character to date. Since usual codes did not work, other approaches were implemented and data were successfully visualized.   
+
+\subsection{Data summary}
+
+```{r, echo=FALSE, message=FALSE}
+rm(list = ls(all.names = TRUE))
+cat("\014")
+library(skimr)
+library(data.table)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(kableExtra)
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+income = fread('tableA2.csv')
+income$Number_thousands = as.numeric(income$Number_thousands)
+income$Median_income = as.numeric(income$Median_income)
+income$Margin_of_error_for_median = as.numeric(income$Margin_of_error_for_median)
+income$Mean_income = as.numeric(income$Mean_income)
+income$Margin_of_error_for_mean = as.numeric(income$Margin_of_error_for_mean)
+i= income %>% 
+  select(-Margin_of_error_for_median, -Margin_of_error_for_mean) %>% 
+  na.omit()  
+#skim (i)
+```
+
+
+\subsection{Results and Discussion}
+
+Since one of the measures of upward mobility is healthy economy and in turn economic advancement is highly dependent on job advancement, real median household income of different races over time has been demonstrated in Figure 1. Real income has been adjusted for inflation, so in order to effectively assess upward mobility, the effect of inflation to time has been eliminated. It can be clearly observed from Figure 1 that median income of people increased over time by reaching more than $100,000 for Asians. Also, Asians as immigrants (at least first generation of Asians was immigrants) presented the highest median real income, which can determine that by hard work even people from lower class (if we consider immigrants as lower class than local established people) can achieve wealth (which is a main concept of upward mobility). Table 1 showed the slope of the lines for each race, which established the median real income increase between 2000-2021. The results are consistent with the graph that shows people attained higher income over time. It has to be noted that working population of U.S (approximately 131,202 people for 2021) was used to obtain median income value for each year and for each race.
+
+```{r, figure1, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household income over time for different races"}
+income = fread('tableA2.csv') %>% 
+  tibble 
+df= income %>% 
+  select(-Margin_of_error_for_median, -Margin_of_error_for_mean) %>% 
+  na.omit() %>% 
+  filter(!Races=='Blackd', !Races =='Asiand', !Races == 'Whited', !Races=='All races', !Races=='American Indian and Alaska native comb') %>% 
+  filter(between(Year, 2000,2021))
+ggplot(df, aes (Year, Median_income, color=Races)) +
+         geom_line(linetype='dashed', size=1)+
+         theme_bw() +
+         labs(x = "Year", y = "Median income ($)", fill="Races") +
+         scale_x_continuous(breaks=seq(1993,2021,by=4))+
+         scale_fill_brewer(palette = "Set2")
+```
+```{r, table1, echo=FALSE, message=FALSE, warning=FALSE}
+year93 = df %>% 
+  select(Year, Median_income, Races) %>% 
+  filter(Year==2000) 
+year21 = df %>% 
+  select(Year, Median_income, Races) %>% 
+  filter(Year==2021)
+final = full_join(year93,year21, by = "Races" )
+final %>% 
+  mutate('Median income increase' = round ((Median_income.y - Median_income.x)/(2021-2000), digits=0)) %>% 
+  select(Races,'Median income increase')  %>% 
+  filter (!Races=='Mixed races') %>% 
+  kable(align=rep('c', 3), format = "pandoc", booktabs = TRUE, caption = "Real median income increase between 2000-2021 (slope of the lines) for each race", escape = FALSE)
+```
+
+Real income of people differ in a certain range. Figure 2 represented percent distribution of household from different races having different range of annual income. The first message of the figures is that comparatively and generally, having small income as between $15,000 to $25,000 or $35,000 to $50,000 decreased over time, which can indicate percent distribution of people who are earning more increased. That can be observed from the income range $150,000 to $200,000 and over $200,000. More than 20% of Asians' annual income is more than $200,000. The sharp increase in number of people who earn more than $200,000 can be noticed after 2013 for all races. Again, that can prove the concept of upward mobility. 
+
+```{r, figure2, echo=FALSE, message=FALSE, warning = FALSE, fig.cap="Percent distribution of real income between certain ranges for different races over time"}
+dfl = pivot_longer(df, cols = c('15,000_to_24,999' , '35,000_to_49,999', '150,000_to_199,999',  '200,000_and_over'))
+dfl$name= as.factor(dfl$name)
+ggplot(dfl, aes (Year, value, color=Races)) +
+         facet_wrap(~factor(name, levels = c('15,000_to_24,999', '35,000_to_49,999', '150,000_to_199,999', '200,000_and_over')))+
+         geom_line(size=1)+
+         theme_bw() +
+         scale_x_continuous(breaks=seq(1993,2021,by=4))+
+         labs(x = "Year", y = "Percent distribution", fill="Races") 
+```
+
+
+Since homeownership is a key factor in establishing upward or downward mobility of Americans, Figure 3 represented homeownership rate over time. The housing bubble was a period of rapid growth in the housing market in the early 2000s, fueled by low interest rates and lax lending standards. However, it ultimately led to a crash in 2008, resulting in the foreclosure of millions of homes and a nationwide economic crisis. That trend was followed by The Foreclosure Crisis (2007-2012). The foreclosure crisis was a result of the housing bubble bursting, which led to a high number of foreclosures and a decline in home values. It resulted in many families losing their homes, and the government had to intervene with programs such as the Home Affordable Modification Program (HAMP) and the Home Affordable Refinance Program (HARP). We can observe a grow in homeownership rate after 2015, which did not last long because of the COVID. The COVID-19 pandemic caused a significant economic downturn, resulting in job losses and financial hardship for many households. It also led to a moratorium on evictions and foreclosures to prevent further economic instability. Although a gradual increase in homeownership rate can be observed after 2021, it cannot explicitly prove upward mobility or downward mobility of the population. The homeownership rate can significantly be affected by several factors as mentioned above and plus the price of the houses which considerably increased over time due to economic crisis. The comprehensive demonstration of that tendency was provided in Figure 4. 
+
+```{r, figure3, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Homeownership rate in the United States from 1993 to 2022"}
+home = read.csv('home.csv')
+home$DATE = strptime(as.character(home$DATE), "%m/%d/%Y") %>% 
+  as.Date((home$DATE), format = "%d-%m-%y")
+home %>% 
+  filter(DATE>'1999-07-01') %>% 
+  ggplot(aes (DATE, Percent)) +
+         geom_line(size=1)+
+         theme_bw() +
+         labs(x = "Year", y = "Homeownership rate") +
+         scale_x_date(date_breaks = "36 months", date_labels = "%Y")+
+         scale_fill_brewer(palette = "Set2")
+```
+
+```{r, figure4, echo=FALSE, message=FALSE, fig.cap="Average sales price of houses sold for the United States"}
+home_price = read.csv('home_price.csv')
+home_price$Date = strptime(as.character(home_price$Date), "%m/%d/%Y") %>% 
+  as.Date((home_price$Date), format = "%d-%m-%y")
+home_price %>% 
+  filter(Date>'1999-10-01') %>% 
+  ggplot(aes (Date, Price)) +
+         geom_line(size=1)+
+         theme_bw() +
+         labs(x = "Year", y = "Sales price of houses ($)") +
+         scale_x_date(date_breaks = "36 months", date_labels = "%Y")+
+         scale_fill_brewer(palette = "Set2")
+```
+
+
+
+\section{Future work}
+In a scope of this project, an interactive dashboard tool will be created to obtain answers to all our research questions. We will use R programming language and R Studio platform to materialize this dashboard. The dashboard will be hosted at Shinyapps server for ease of public access.
+
+
+
+\section{Updated timeline}
+```{r, echo=FALSE, message=FALSE}
+df=read.csv("Project.csv")
+kable(df, align = "l")|>
+ column_spec(1, width = "3cm")|>
+ column_spec(2, width = "4cm")|>
+ column_spec(3, width = "10cm")
+```
+
+```{r}
+library(tidyverse)
+real_median_income <- read.csv('/Users/collindougherty/Downloads/MEHOINUSA672N.csv')
+median_income <- read.csv('/Users/collindougherty/Downloads/MEFAINUSA646N.csv')
+income_lowest_50 <- read.csv('/Users/collindougherty/Downloads/WFRBLB50107.csv')
+income_share <- read.csv('/Users/collindougherty/Downloads/dfa-networth-shares.csv')
+income_share <- income_share %>% mutate(Category = ifelse(Category == "TopPt1" | Category == "RemainingTop1", "Top1", Category))
+income_share <- income_share %>% filter(Date > 2000)
+# Create a new column with renamed categories
+income_share$Category <- ifelse(income_share$Category == "Top1", "Top 1%",
+                                               ifelse(income_share$Category == "Next9", "Next 9%", 
+                                                      ifelse(income_share$Category == "Next40", "Next 40%", 
+                                                             ifelse(income_share$Category == "Bottom50", "Bottom 50%", 
+                                                                    income_share$Category))))
+```
+
+```{r}
+library(ggplot2)
+real_median_income$DATE <- as.Date(real_median_income$DATE)
+real_median_income <- real_median_income %>% filter(DATE > "1999-01-01")
+ggplot(data = real_median_income, aes(x=DATE, y=MEHOINUSA672N)) + 
+  geom_line(color = "Dark Green") +
+  labs(x = 'Year', y = 'Real Median Income', title=element_text(face = "bold", size = 14, "Real Median Income Over Time, US"), subtitle = "Even when adjusting for inflation, Americans are making more than ever.") +
+  theme_minimal()
+```
+
+```{r}
+library(zoo)
+library(ggplot2)
+income_share$Date <- as.yearqtr(income_share$Date, format = "%Y:Q%q")
+#income_share <- income_share %>% mutate(ifelse(Category == "TopPt1"))
+income_share_summed <- aggregate(Net.worth ~ Date + Category, data = income_share, sum)
+# Create a ggplot object with Bottom50 net worth over time
+ggplot(income_share_summed, aes(x = Date, y = Net.worth, color = Category)) +
+  geom_line() +
+  labs(x = "Date", y = "Percentage", title = "Share of Net Worth By Economic Class") +
+  theme_minimal()
+```
+
+```{r}
+income_share_summed <- aggregate(Consumer.credit ~ Date + Category, data = income_share, sum)
+# Create a ggplot object with Bottom50 net worth over time
+ggplot(income_share_summed, aes(x = Date, y = Consumer.credit, color = Category)) +
+  geom_line() +
+  labs(x = "Date", y = "Percentage", title = "Share of Consumer Credit by Economic Class") +
+  theme_minimal()
+```
+
+```{r}
+income_share_summed <- aggregate(Home.mortgages ~ Date + Category, data = income_share, sum)
+# Create a ggplot object with Bottom50 net worth over time
+ggplot(income_share_summed, aes(x = Date, y = Home.mortgages, color = Category)) +
+  geom_line() +
+  labs(x = "Date", y = "Percentage", title = "Share of Mortgages by Economic Class") +
+  theme_minimal()
+```
+
+```{r}
+income_share_summed <- aggregate(Assets ~ Date + Category, data = income_share, sum)
+# Create a ggplot object with Bottom50 net worth over time
+ggplot(income_share_summed, aes(x = Date, y = Assets, color = Category)) +
+  geom_line() +
+  labs(x = "Date", y = "Percentage of all Net Worth in US", title = "Share of Assets by Economic Class") +
+  theme_minimal()
+```
+
+
+```{r}
+median_income$DATE <- as.Date(median_income$DATE)
+median_income <- median_income %>% filter(DATE > "1999-01-01")
+ggplot(data = median_income, aes(x=DATE, y=MEFAINUSA646N)) + 
+  geom_line(color = "Dark Green") +
+  labs(x = 'Year', y = 'Median Income', title=element_text(face = "bold", size = 14, "Median Income Over Time, US"), subtitle = "Americans are making more than ever.") +
+  theme_minimal()
+```
+
+```{r load-packages, setup, include=FALSE}
+library(data.table)
+library(stringr)
+library(dplyr)
+library(GGally)
+library(ggplot2)
+library(knitr)
+library(mdsr)
+library(naniar)
+library(reshape2)
+library(stats)
+library(tidyr)
+library(tidyverse)
+opts_chunk$set(fig.align='center', message=FALSE, warning=FALSE)
+```
+
+1. Using a line graph to visualize the number people who migrated to the United State from 2000 to 2021, we notice a decline of steady decline since 2019:
+
+
+```{r}
+immigrations <-read.csv("hst_mig_a_2_ReOrganized.csv", header = TRUE)
+immigrantsDF <-  rename(immigrations, Region = TypeOfMigration) %>%
+                na.omit()
+ggplot(immigrantsDF, 
+        aes(x = MobilityPeriod, y = MoversFromAbroad, color = Region, group = Region)) +
+    geom_line() +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+    labs(x="Mobility Periods", y = "Immigrants")
+```
+2. Using a box plot graph to visualize the number people who migrated to the United State from 2000 to 2021, we show the median for each region for each the years.  We also see a decreasing trend since 2019.
+
+```{r}
+ggplot(data=immigrantsDF, aes(x=MobilityPeriod, y=MoversFromAbroad)) +
+        geom_point(aes(color=Region), alpha=0.2, position="jitter") +
+        geom_boxplot(outlier.size=0, alpha=0.1) +
+        theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+        theme(legend.position="right") +
+        labs(x="Mobility Periods", y = "Immigrants")
+```
+3. Using a bar chart to visualize the immigration data, we see the totals for each region from 2000 through 2021.
+
+```{r}
+ggplot(immigrantsDF,aes(MoversFromAbroad,Region), label=Region)+
+  geom_bar(stat="identity", col="lightblue")+
+  labs(x="Immigrants", y = "Region")+
+  coord_flip()
+```
+4. To help explain the downward trend of immigration, we decided to look at the number of U.S visas issued to foreigners. Just as we suspected, our visualization of the visas dataset confirms a correlation between the number of visas issued and the number of immigrants entering the United States.
+
+```{r}
+visa <-read.csv("visas_granted_usafacts.csv", header = FALSE)
+visa <- visa[1:2,] # grab only the first 2 rows
+transposedVisa <- t(visa) %>%
+                na.omit() 
+rownames(transposedVisa)<-NULL #remove row names
+colnames(transposedVisa) = transposedVisa[1,] # copy first row to header
+transposedVisa <- transposedVisa[-1,] # delete the first row since it was converted to header
+transposedVisa <- as.data.frame(transposedVisa)
+i <- c(1, 2)  # columns to convert from string to number and trim white spaces
+transposedVisa[ , i] <- sapply(transposedVisa[ , i], 
+                                function(x) as.numeric(str_remove_all(x," ")))
+transposedVisa <-  rename(transposedVisa, Visas = "Visas granted (People)") %>%
+                na.omit()
+visaDF <- transposedVisa %>%
+        na.omit() %>%
+        filter(Years >= 2000) %>%
+        mutate(Visas = Visas/1000)
+ggplot(visaDF, aes(Years, Visas)) +
+      geom_line(lwd=1) +
+      theme_bw() +
+      labs(x="Years", y = "Visas")
+```
+5. To further explain the downward trend of immigration, we decided to look at the number of asylum claims the U.S granted to foreigners. Just as we suspected, our visualization of the asylums dataset confirms a correlation between the number of asylums claims granted and the number of immigrants entering the United States.
+
+```{r}
+asylum <-read.csv("asylum_claims_granted_usafacts.csv", header = FALSE)
+asylum <- asylum[1:2,] # grab only the first 2 rows
+transposedAsylums <- t(asylum) %>%
+                na.omit() 
+rownames(transposedAsylums)<-NULL #remove row names
+colnames(transposedAsylums) = transposedAsylums[1,] # copy first row to header
+transposedAsylums <- transposedAsylums[-1,] # delete the first row since it was converted to header
+transposedAsylums <- as.data.frame(transposedAsylums)
+i <- c(1, 2)  # columns to convert from string to number and trim white spaces
+transposedAsylums[ , i] <- sapply(transposedAsylums[ , i], 
+                                function(x) as.numeric(str_remove_all(x," ")))
+transposedAsylums <-  rename(transposedAsylums, Asylums = "Asylum claims granted (People)") %>%
+                              na.omit()
+asylumDF <- transposedAsylums %>%
+        na.omit() %>%
+        filter(Years >= 2000) %>%
+        mutate(Asylums = Asylums/1000)
+ggplot(asylumDF, aes(Years, Asylums)) +
+      geom_line(lwd=1) +
+      theme_bw() +
+      labs(x="Years", y = "Asylums")
+```
+
+## Networth by Race / Ethnicity
+Data was collected for the years from 1994 until 2020 and merged into a single excel file. The source data is available from https://www.census.gov/topics/income-poverty/wealth/data/tables.html 
+The older data was in PDF's and the newer data was in xls. Relevent data was combined into a single spreadsheet named CombinedNetByRace.xlsx. The median row was skipped and the columns where relabeled. After relabel columns were melted together for ease of use with only race_ethnicity being keep. Columns were then relabeled again and converted to appropriate data types. A line plot was then created from ggplot2. 
+
+```{r race}
+combinedNetworthByRace <- read_excel("~/projects/americandream/CombinedNetByRace.xlsx",
+                                     col_names = TRUE, skip = 1)
+colnames(combinedNetworthByRace) <- c("race_ethnicity","2000","2002","2004","2005","2009",
+                                      "2010","2011","2013","2014","2015","2016", "2017",
+                                      "2018","2019","2020")
+combinedNetByRace_wide <- melt(combinedNetworthByRace, id='race_ethnicity')
+colnames(combinedNetByRace_wide) <-c("race_ethnicity","year","networth")
+combinedNetByRace_wide$race_ethnicity <-as.factor(combinedNetByRace_wide$race_ethnicity)
+combinedNetByRace_wide$year <- as.Date(combinedNetByRace_wide$year,format="%Y")
+suppressWarnings(combinedNetByRace_wide$networth <-as.numeric(combinedNetByRace_wide$networth, na.rm = TRUE))
+wealthByRace_chart <- ggplot(combinedNetByRace_wide, aes(x = year, 
+                                                          y = networth, 
+                                                          group = race_ethnicity,
+                                                          color = race_ethnicity )) + 
+ geom_line() + labs(title = "Median Networth by year Grouped By Race/Ethnicity",
+                     x = "Year", y = "Median Net Worth", 
+                     color = "Race/Ethnicity") + theme_minimal()+theme_bw()
+wealthByRace_chart + scale_y_continuous(limit = c(0,250000),labels = scales::comma)
+```
+
+In this chart you can see the increase in wealth by Race / Ethnicity over the years. It shows that general the accumulation of wealth has went up. Some Races / Ethnicities have benefited more than others, but overall through out time all races have increased in median wealth. 
+
+```{r race_facet}
+#faceted by race
+wealthByRace_facetchart <- ggplot(combinedNetByRace_wide, aes(x = year, 
+                                                          y = networth, 
+                                                          group = race_ethnicity,
+                                                          color = race_ethnicity )) + 
+  geom_line() + labs(title = "Median Networth by year",
+                     subtitle = "faceted by Race",
+                     x = "Year", y = "Median Net Worth", 
+                     color = "Race/Ethnicity") + theme_bw() + theme(legend.position = "bottom",axis.text.x = element_text(angle=45)) + 
+  facet_grid(cols = vars(race_ethnicity)) 
+wealthByRace_facetchart + scale_y_continuous(limit = c(0,250000), labels = scales::comma)
+```
+
+
+## Networth by Age of Householder
+Data was collected for the years from 1994 until 2020 and merged into a single excel file. The source data is available from https://www.census.gov/topics/income-poverty/wealth/data/tables.html 
+The older data was in PDF's and the newer data was in xls. Relevent data was combined into a single spreadsheet named CombinedNetByAge.xlsx.  The median row was skipped and the columns where relabeled. After relabel columns were melted together for ease of use with only age_house being keep. Columns were then relabeled again and converted to appropriate data types. A line plot was then created from ggplot2.  
+
+```{r age}
+combinedNetByAge <- read_excel("~/projects/americandream/CombinedNetByAge.xlsx",col_names = TRUE, skip = 2)
+colnames(combinedNetByAge) <- c("age_house","2000","2002","2004","2005","2009","2010","2011","2013","2014","2015","2016","2017","2018","2019","2020")
+combinedNetByAge_wide <- melt(combinedNetByAge, id='age_house')
+colnames(combinedNetByAge_wide) <-c("age_house","year","networth")
+combinedNetByAge_wide$age_house <-as.factor(combinedNetByAge_wide$age_house)
+combinedNetByAge_wide$year <- as.Date(combinedNetByAge_wide$year,format="%Y")
+suppressWarnings(combinedNetByAge_wide$networth <-as.numeric(combinedNetByAge_wide$networth, na.rm = TRUE))
+wealthByAge_chart <- ggplot(combinedNetByAge_wide, aes(x = year, 
+                                                       y = networth, 
+                                                       group = age_house,
+                                                       color = age_house )) + 
+  geom_line() + labs(title = "Median Networth by year Grouped By Age",
+                     x = "Year", y = "Median Networth", 
+                     color = "Age of Householder") + theme_bw()
+wealthByAge_chart + scale_y_continuous(limits = c(0,350000), labels = scales::comma)
+```
+
+In this chart you can see the increase in wealth by Age over the years. It shows that general the accumulation of wealth goes up as time progresses. The older you are the more time you have to attain wealth. It also show that post retirement age wealth goes down. This is indicative of wealth being used to instead of income to pay for living expenses. 
+
+```{r age_facet}
+#faceted by Age
+wealthByAge_facetchart <- ggplot(combinedNetByAge_wide, aes(x = year, 
+                                                            y = networth, 
+                                                            group = age_house,
+                                                            color = age_house )) + 
+  geom_line() + labs(title = "Median Networth by year",
+                     subtitle = "faceted by Age",
+                     x = "Year", y = "Median Net Worth", 
+                     color = "Age House") +  theme_bw() + theme(legend.position = "bottom",axis.text.x = element_text(angle=45)) +
+  facet_grid(cols = vars(age_house))
+wealthByAge_facetchart + ylim(0,250000) + scale_y_continuous(labels = scales::comma)
+```
+
+## Networth by Educational attainment
+Data was collected for the years from 1994 until 2020 and merged into a single excel file. The source data is available from https://www.census.gov/topics/income-poverty/wealth/data/tables.html 
+The older data was in PDF's and the newer data was in xls. Relevent data was combined into a single spreadsheet named CombinedNetByEd.xlsx. The median row was skipped and the columns where relabeled. After relabel columns were melted together for ease of use with only ed_house being keep. Columns were then relabeled again and converted to appropriate data types. A line plot was then created from ggplot2. 
+
+```{r ed}
+combinedNetByEd <- read_excel("~/projects/americandream/CombinedNetByEd.xlsx",col_names = TRUE, skip = 1)
+colnames(combinedNetByEd) <- c("ed_house","2000","2002","2004","2005","2009","2010","2011","2013","2014","2015","2016","2017","2018","2019","2020")
+combinedNetByEd_wide <- melt(combinedNetByEd, id='ed_house')
+colnames(combinedNetByEd_wide) <-c("ed_house","year","networth")
+combinedNetByEd_wide$ed_house <-as.factor(combinedNetByEd_wide$ed_house)
+combinedNetByEd_wide$year <- as.Date(combinedNetByEd_wide$year,format="%Y")
+suppressWarnings(combinedNetByEd_wide$networth <-as.numeric(combinedNetByEd_wide$networth, na.rm = TRUE))
+wealthByEd_chart <- ggplot(combinedNetByEd_wide, aes(x = year, 
+                                                     y = networth, 
+                                                     group = ed_house,
+                                                     color = ed_house )) + 
+  geom_line() + labs(title = "Median Networth by year Grouped By Education",
+                     x = "Year", y = "Median Networth", 
+                     color = "Education of Householder") + theme_bw()
+wealthByEd_chart + scale_y_continuous(limits = c(0,450000),labels = scales::comma)
+```
+In this chart you can see the largest change in wealth among the populations. It indicates that on average, those with more education accrue and maintain more wealth. 
+```{r ed facet}
+#faceted by ed
+wealthByEd_facetchart <- ggplot(combinedNetByEd_wide, aes(x = year, 
+                                                          y = networth, 
+                                                          group = ed_house,
+                                                          color = ed_house )) + 
+  geom_line() + labs(title = "Median Networth by year",
+                     subtitle = "faceted by Education",
+                     x = "Year", y = "Median Net Worth", 
+                     color = "Education") + theme_bw() + theme(legend.position = "bottom",axis.text.x = element_text(angle=45)) + 
+  facet_grid(cols = vars(ed_house))
+wealthByEd_facetchart + ylim(0,250000) + scale_y_continuous(labels = scales::comma)
+```
+
+# Uploading required packages
+
+```{r}
+library(tidyverse) # for ggplot
+library(usmap) # to get maps
+library(janitor) # for clean_names
+library(ggeasy) # making ggplot customisation easy
+library(gganimate) # for animating map by year
+library(transformr) # for gganimate
+library(patchwork) # to patch plots together
+library(ggplot2)
+library(reshape2)
+library(tidyr)
+library(dplyr)
+library(gridExtra)
+library(grid)
+df <- read.csv("C:/Users/mewej/OneDrive/Documents/INTRO TO DATA SCIENCE/DREAM/dream.csv", header=T,check.names=F)
+head(df)
+```
+
+
+```{r}
+df2 <- melt(df, id = c("GeoFips", "State")) %>%
+rename("state" = "State")
+head(df2)
+```
+
+
+# Subset our data
+
+
+```{r}
+year1990 <- df2 %>%
+  filter(variable == 1990)
+year2000 <- df2 %>%
+  filter(variable == 2000)
+year2010 <- df2 %>%
+  filter(variable == 2010)
+year2021 <- df2 %>%
+  filter(variable == 2021)
+```
+
+# Fill the map with our data
+
+```{r}
+p1 <- plot_usmap(data = year1990, values = "value", labels=FALSE)
+p2 <- plot_usmap(data = year2000, values = "value", labels=FALSE)
+p3 <- plot_usmap(data = year2010, values = "value", labels=FALSE)
+p4 <- plot_usmap(data = year2021, values = "value", labels=FALSE)
+```
+
+# State annual personal income summary: personal income, population, per capita personal income
+# Per capita personal income (Dollars)
+
+```{r}
+p5 <- plot_usmap(data = year1990, values = "value", labels=FALSE) +
+  scale_fill_continuous(low = "white", high = "red", 
+                         name = "income", 
+                        limits = c(1000,100000)) +
+  easy_move_legend(to = c("right")) +
+  labs(title = "Per capita personal income in 1990") +
+  theme(panel.background = element_rect(colour = "black"))
+p6 <- plot_usmap(data = year2000, values = "value", labels=FALSE) +
+  scale_fill_continuous(low = "white", high = "red", 
+                         name = "income", 
+                        limits = c(1000,100000)) +
+  easy_move_legend(to = c("right")) +
+  labs(title = "Per capita personal income in 2000") +
+  theme(panel.background = element_rect(colour = "black"))
+p7 <- plot_usmap(data = year2010, values = "value", labels=FALSE) +
+  scale_fill_continuous(low = "white", high = "red", 
+                         name = "income", 
+                        limits = c(1000, 100000)) +
+  easy_move_legend(to = c("right")) +
+  labs(title = "Per capita personal income in 2010") +
+  theme(panel.background = element_rect(colour = "black"))
+p8 <- plot_usmap(data = year2021, values = "value", labels=FALSE) +
+  scale_fill_continuous(low = "white", high = "red", 
+                         name = "income", 
+                        limits = c(1000,100000)) +
+  easy_move_legend(to = c("right")) +
+  labs(title = "Per capita personal income in 2021") +
+  theme(panel.background = element_rect(colour = "black"))
+p9 <- p5 + p6 + p7 + p8
+p9
+p10 <- p6 + p7 + p8
+p10
+p6
+p7
+p8
+```
+
+Personal income is income that people get from wages and salaries, Social Security and other government benefits, dividends and interest, business ownership, and other sources. 
+
+Per capita personal income is total personal income divided by total midyear population. These intercensal population figures for 2010 to 2019 are tied to the Census Bureau decennial counts for 2010 and 2020 to create consistent time series that are used to prepare per capita personal income statistics.
+
+Americans per capita personal income has doubled over the last three decades. As expected, states in the Mid-Atlantic, Northeast, and Hawaii are among states with highest per capita personal income. 
+
+
+```{r}
+wea <- read.csv("C:/Users/mewej/OneDrive/Documents/INTRO TO DATA SCIENCE/share_wealth_us.csv")
+```
+
+## Creating bar Plots
+
+```{r}
+weaplot <- ggplot(data = wea, aes(x = reorder(State, SNW), y = SNW, fill = State)) + 
+   geom_bar(stat = "identity") + 
+   coord_flip()+
+   labs(x = "State", y = "Share of Nationwide Wealth (%)", 
+    caption = "Source: 2022 wealth estimates from ITEP Microsimulation Tax Model",
+    bottom = textGrob("grid caption", x = 1, 
+                                hjust = 1, gp = gpar(fontface = 3L, fontsize = 9)))  +
+  theme(legend.position = "none") 
+weaplot
+```
+
+From the above figure, we can deduct that extreme wealth is highly concentrated geographically. Nearly a third of nationwide wealth is held by families living in New York and California. Another 18 percent belongs to residents of Texas and Florida. In sum, this means that more than half of nationwide extreme wealth is held by the residents of just four states. These states are home to less than half (46 percent) of the U.S. population.
+
+
+# Assets by wealth percentile group in 2022
+
+```{r}
+compo <- read.csv("C:/Users/mewej/OneDrive/Documents/INTRO TO DATA SCIENCE/DREAM/components.csv") 
+compo <- rename(compo, Top1 = `Top.0.1.`, Top2 = `X99.99.9.`, Top3 = `X90.99.`, middle = `X50.90.`, bottom50 = `Bottom.50.`)
+head(compo)
+```
+
+
+```{r}
+compomelt <- pivot_longer(compo, c("Top1", "Top2", "Top3", "middle", "bottom50"))
+compomelt <- rename(compomelt, "percentile_group" = "name", "percent" = "value")
+compomelt2 <- compomelt
+compomelt2$percentile_group <- factor(compomelt2$percentile_group, levels = c("Top1", "Top2", "Top3", "middle", "bottom50"))
+                           
+yo <- ggplot(data = compomelt2, aes(x = percentile_group, y = percent, fill = Wealth.component)) + 
+  geom_bar(stat = "identity") +
+  labs(caption = "Top1 =Top 0.1%, Top2 =99-99.9%, Top3 =90-99%, middle =50-90%, bottom50 =Bottom 50%") 
+yo
+```
+
+
+Assets by wealth percentile group distribution shows a higher interest for real state from the bottom 50% of the population compared to the top 0.1% that has corporate equities and mutual fund shares as main asset. Extremely wealthy households definitely has a total different composition of wealth by asset type compared to households in the bottom percentile.   
+
+----------------Reference-----------------------
+
+Figure1: Per capita personal income from 2000 to 2021
+Source:U.S. Bureau of Economic Analysis, "SAINC1 State annual personal income summary: personal income, population, per capita personal income" 
+
+Figure2: "Share of Nationwide Extreme Wealth Found in Each State"
+Source: 2022 wealth estimates from ITEP Microsimulation Tax Model and 2021 population estimates from U.S. Census Bureau
+
+Figure3: Assets by wealth percentile group in 2021:Q4
+Source: https://www.federalreserve.gov/releases/z1/dataviz/dfa/compare/chart/#quarter:129;series:Assets;demographic:networth;population:all;units:shares
+
+
+
