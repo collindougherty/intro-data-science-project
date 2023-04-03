@@ -62,6 +62,8 @@ The visas dataset visas_granted_usafacts.csv arranged the data in a wide fashion
 
 The asylums dataset asylum_claims_granted_usafacts.csv arranged the data in a wide fashion, with the row names at the far left column, just like what we saw in the visas dataset. We selected the first row named "Years" and the second row named "Asylum claims granted (People)." We transposed the first and second rows into two columns named "Years" and "Asylums".
 
+The walth data was in several different file types spread accross the years. The most recent data was in xlsx so it ws desided to standardize on that format. Only the necessary data was kept from the wealth data. Names were standardized and inconcistancies among the files was correected. NAs were added where the data didn't exist to fill out the data sets. Irrelevant data was removed to only have the data for the period of interest for the paper. 
+
 
 \subsection{Findings and Explanations}
 talk about graphs here. cite figure #s
