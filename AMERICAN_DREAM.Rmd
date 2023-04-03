@@ -46,7 +46,7 @@ For immigration data, we will borrow from three different datasets.  The first d
 Since some of our Excel files we used have multiple tabs (spreadsheets), multiple header columns, and random notes embedded across multiple columns, we found it necessary to clean and reorganize some of the datasets. 
 
 \subsection{Brief description of data}
-hmm
+Census data provides valuable information about various demographic and socioeconomic factors of a population, including wealth, home ownership, income, and migration. Within the datasets contained at census.gov we used a subset including: wealth, home ownership, income, and migration. 
 
 \section{Exploratory Data Analysis}
 \subsection{Data Cleaning}
