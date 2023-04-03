@@ -279,6 +279,7 @@ Assets by wealth percentile group distribution shows a higher interest for real 
 ```{r, Figure7, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Assets by wealth percentile group in 2022"}
 
 compo = fread('components.csv')
+compo <- rename(compo, Top1 = `Top.0.1.`, Top2 = `X99.99.9.`, Top3 = `X90.99.`, middle = `X50.90.`, bottom50 = `Bottom.50.`)
 compomelt <- pivot_longer(compo, c("Top1", "Top2", "Top3", "middle", "bottom50"))
 compomelt <- rename(compomelt, "percentile_group" = "name", "percent" = "value")
 compomelt2 <- compomelt
