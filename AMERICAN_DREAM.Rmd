@@ -90,7 +90,6 @@ suppressMessages(library(tidyverse))
 suppressPackageStartupMessages(library(reshape2))
 suppressPackageStartupMessages(library(scales))
 suppressPackageStartupMessages(library(dplyr))
-library(ggplot2)
 options(scipen = 999)
 library(zoo)
 ```
@@ -288,10 +287,30 @@ ggplot(data = compomelt2, aes(x = percentile_group, y = percent, fill = `Wealth 
   labs(caption = "Top1 =Top 0.1%, Top2 =99-99.9%, Top3 =90-99%, middle =50-90%, bottom50 =Bottom 50%") 
 ```
 
+```{r, figure8, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household wealth over time for different ages"}
+
+combinedNetByAge <- read_excel("./americandream/CombinedNetByAge.xlsx",col_names = TRUE, skip = 2)
+colnames(combinedNetByAge) <- c("age_house","2000","2002","2004","2005","2009","2010","2011","2013","2014","2015","2016","2017","2018","2019","2020")
+
+combinedNetByAge_wide <- melt(combinedNetByAge, id='age_house')
+colnames(combinedNetByAge_wide) <-c("age_house","year","networth")
+combinedNetByAge_wide$age_house <-as.factor(combinedNetByAge_wide$age_house)
+combinedNetByAge_wide$year <- as.Date(combinedNetByAge_wide$year,format="%Y")
+suppressWarnings(combinedNetByAge_wide$networth <-as.numeric(combinedNetByAge_wide$networth, na.rm = TRUE))
+
+
+wealthByAge_chart <- ggplot(combinedNetByAge_wide, aes(x = year, 
+                                                       y = networth, 
+                                                       group = age_house,
+                                                       color = age_house )) + 
+  geom_line() + labs(x = "Year", y = "Median Networth", 
+                     color = "Age of Householder") + theme_bw()
+wealthByAge_chart + scale_y_continuous(limits = c(0,350000), labels = scales::comma)
+```
 
 
 
-```{r, figure6, echo=FALSE, message=FALSE, fig.cap="Real Median Income, US"}
+```{r, figure9, echo=FALSE, message=FALSE, fig.cap="Real Median Income, US"}
 real_median_income <- fread('americandream/MEHOINUSA672N.csv')
 median_income <- fread('americandream/MEFAINUSA646N.csv')
 income_lowest_50 <- fread('americandream/WFRBLB50107.csv')
@@ -308,7 +327,7 @@ income_share$Category <- ifelse(income_share$Category == "Top1", "Top 1%",
                                                                     income_share$Category))))
 ```
 
-```{r, figure11, echo=FALSE, message=FALSE, fig.cap="Median Income, US"}
+```{r, figure10, echo=FALSE, message=FALSE, fig.cap="Median Income, US"}
 median_income$DATE <- as.Date(median_income$DATE)
 median_income <- median_income %>% filter(DATE > "1999-01-01")
 ggplot(data = median_income, aes(x=DATE, y=MEFAINUSA646N)) + 
@@ -319,7 +338,7 @@ ggplot(data = median_income, aes(x=DATE, y=MEFAINUSA646N)) +
 
 Since 2000, median income growth has been substantial, nearly doubling from ~$50,000 to ~$90,000, with only a slight hiccup as a result of the Global Financial Crisis, before quickly picking up speed again. Similarly, there is a discernable dip as a result of the COVID-19 pandemic, before economic growth (and inflation) rapidly picked up. Overall, however, Americans have experiences long term secular income growth since 2000. 
 
-```{r, figure14, echo=FALSE, message=FALSE, fig.cap="Real Median Income, US"}
+```{r, figure11, echo=FALSE, message=FALSE, fig.cap="Real Median Income, US"}
 real_median_income$DATE <- as.Date(real_median_income$DATE)
 real_median_income <- real_median_income %>% filter(DATE > "1999-01-01")
 ggplot(data = real_median_income, aes(x=DATE, y=MEHOINUSA672N)) + 
@@ -332,7 +351,7 @@ While median income over time is in fact a useful and interesting metric, it is 
 
 The significant finding though is that despite inflation and major economic pressures from the GFC and COVID-19, Americans have still seen substantial real income growth, indicating an improving quality of life and the ability to pursue the American dream.
 
-```{r, figure13, echo=FALSE, message=FALSE, fig.cap="Share of Net Worth by Economic Class"}
+```{r, figure12, echo=FALSE, message=FALSE, fig.cap="Share of Net Worth by Economic Class"}
 income_share_summed1 <- aggregate(`Net worth` ~ Date + Category, data = income_share, sum)
 
 # Create a ggplot object with Bottom50 net worth over time
@@ -351,7 +370,7 @@ We see a similar pattern when it comes to Asset distribution, with the top 10% h
 Lastly, we see that lower and middle classes hold the lionshare of consumer credit. This points to some problems, as consumer credit often arises as a result of cash shortages. So lower classes may be achieving certain elements of the American Dream, although they are likely shackling themselves with debt that, long term, may be keeping them from advancing as far as they otherwise could.
 
 
-```{r, figure8, echo=FALSE, message=FALSE, fig.cap="Share of Consumer Credit by Economic Class"}
+```{r, figure13, echo=FALSE, message=FALSE, fig.cap="Share of Consumer Credit by Economic Class"}
 income_share_summed2 <- aggregate(`Consumer credit` ~ Date + Category, data = income_share, sum)
 # Create a ggplot object with Bottom50 net worth over time
 ggplot(income_share_summed2, aes(x = Date, y = `Consumer credit`, color = Category, group = Category)) +
@@ -360,7 +379,7 @@ ggplot(income_share_summed2, aes(x = Date, y = `Consumer credit`, color = Catego
   theme_minimal()
 ```
 
-```{r, figure9, echo=FALSE, message=FALSE, fig.cap="Share of Mortgages by Economic Class"}
+```{r, figure14, echo=FALSE, message=FALSE, fig.cap="Share of Mortgages by Economic Class"}
 income_share_summed3 <- aggregate(`Home mortgages` ~ Date + Category, data = income_share, sum)
 # Create a ggplot object with Bottom50 net worth over time
 ggplot(income_share_summed3, aes(x = Date, y = `Home mortgages`, color = Category, group = Category)) +
@@ -369,7 +388,7 @@ ggplot(income_share_summed3, aes(x = Date, y = `Home mortgages`, color = Categor
   theme_minimal()
 ```
 
-```{r, figure10, echo=FALSE, message=FALSE, fig.cap="Share of Assets by Economic Class"}
+```{r, figure15, echo=FALSE, message=FALSE, fig.cap="Share of Assets by Economic Class"}
 income_share_summed4 <- aggregate(Assets ~ Date + Category, data = income_share, sum)
 # Create a ggplot object with Bottom50 net worth over time
 ggplot(income_share_summed4, aes(x = Date, y = Assets, color = Category, group = Category)) +
