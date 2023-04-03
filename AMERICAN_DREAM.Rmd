@@ -7,6 +7,7 @@ date: "2023-04-02"
 
 ```{r setup, include=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
 \section{Introduction}
@@ -89,7 +90,7 @@ library(zoo)
 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-income = fread('tableA2.csv')
+income = fread('./americandream/tableA2.csv')
 income$Number_thousands = as.numeric(income$Number_thousands)
 income$Median_income = as.numeric(income$Median_income)
 income$Margin_of_error_for_median = as.numeric(income$Margin_of_error_for_median)
@@ -107,7 +108,7 @@ i= income %>%
 Since one of the measures of upward mobility is healthy economy and in turn economic advancement is highly dependent on job advancement, real median household income of different races over time has been demonstrated in Figure 1. Real income has been adjusted for inflation, so in order to effectively assess upward mobility, the effect of inflation to time has been eliminated. It can be clearly observed from Figure 1 that median income of people increased over time by reaching more than $100,000 for Asians. Also, Asians as immigrants (at least first generation of Asians was immigrants) presented the highest median real income, which can determine that by hard work even people from lower class (if we consider immigrants as lower class than local established people) can achieve wealth (which is a main concept of upward mobility). Table 1 showed the slope of the lines for each race, which established the median real income increase between 2000-2021. The results are consistent with the graph that shows people attained higher income over time. It has to be noted that working population of U.S (approximately 131,202 people for 2021) was used to obtain median income value for each year and for each race.
 
 ```{r, figure1, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household income over time for different races"}
-income = fread('tableA2.csv') %>% 
+income = fread('./americandream/tableA2.csv') %>% 
   tibble 
 df= income %>% 
   select(-Margin_of_error_for_median, -Margin_of_error_for_mean) %>% 
@@ -123,7 +124,7 @@ ggplot(df, aes (Year, Median_income, color=Races)) +
 ```
 ```{r, figure2, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household wealth over time for different races"}
 
-combinedNetworthByRace <- read_excel("~/projects/americandream/CombinedNetByRace.xlsx",
+combinedNetworthByRace <- read_excel("./americandream/CombinedNetByRace.xlsx",
                                      col_names = TRUE, skip = 1)
 colnames(combinedNetworthByRace) <- c("race_ethnicity","2000","2002","2004","2005","2009",
                                       "2010","2011","2013","2014","2015","2016", "2017",
