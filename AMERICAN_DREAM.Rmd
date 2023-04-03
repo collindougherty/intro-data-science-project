@@ -146,10 +146,11 @@ wealthByRace_chart <- ggplot(combinedNetByRace_wide, aes(x = year,
                                                           y = networth, 
                                                           group = race_ethnicity,
                                                           color = race_ethnicity )) + 
- geom_line() + labs(x = "Year", y = "Median Net Worth", 
+ geom_line() + labs(x = "Year", y = "Median Networth ($)", 
                      color = "Race/Ethnicity") + theme_minimal()+theme_bw()
 wealthByRace_chart + scale_y_continuous(limit = c(0,250000),labels = scales::comma)
 ```
+Wealth distribution varies across different races, and Asians tend to accumulate the most wealth in the United States. This can be attributed to various factors, such as their high levels of education, higher average income, and high percentage of investment. As a result, Asians have the highest median household wealth just over $200,000, as shown in Figure 2. Meanwhile, other races such as Black and Hispanic households have lower median household wealth. Nonetheless, it is important to note that wealth and income while highly correlated, many other factors such as education, and age impact one's overall wealth. 
 
 ```{r, figure3, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household wealth over time for different Education"}
 
@@ -163,12 +164,10 @@ combinedNetByEd_wide$year <- as.Date(combinedNetByEd_wide$year,format="%Y")
 suppressWarnings(combinedNetByEd_wide$networth <-as.numeric(combinedNetByEd_wide$networth, na.rm = TRUE))
 
 wealthByEd_chart <- ggplot(combinedNetByEd_wide, aes(x = year, y = networth, group = ed_house, color = ed_house )) + 
-  geom_line() + labs(title = "Median Networth by year Grouped By Education",
-                     x = "Year", y = "Median Networth", 
-                     color = "Education of Householder") + theme_bw()
+  geom_line() + labs(x = "Year", y = "Median income ($)", color = "Education of Householder") + theme_bw()
 wealthByEd_chart + scale_y_continuous(limits = c(0,450000),labels = scales::comma)
 ```
-In this chart you can see the largest change in wealth among the populations. It indicates that on average, those with more education accrue and maintain more wealth. 
+Another measures of upward mobility in a healthy economy is wealth, and education plays a crucial role in determining a person's wealth. Therefore, it is important to examine the relationship between education and wealth over time. Figure 3 displays the real median household netweorth of population groups with different education levels over time, with adjustments made for inflation to eliminate its effect on assessing upward mobility. The graph clearly illustrates that median household wealth increased over time, with the highly educated achieving the highest median real wealth. A Masters or professional degree had the highest median real wealth, suggesting that hard work can lead to wealth, which is a critical component of upward mobility. 
 
 ```{r, table1, echo=FALSE, message=FALSE, warning=FALSE}
 year93 = df %>% 
