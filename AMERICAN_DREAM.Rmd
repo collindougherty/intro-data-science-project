@@ -7,6 +7,7 @@ date: "2023-04-02"
 
 ```{r setup, include=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
 \section{Introduction}
@@ -86,7 +87,7 @@ library(zoo)
 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-income = fread('tableA2.csv')
+income = fread('./americandream/tableA2.csv')
 income$Number_thousands = as.numeric(income$Number_thousands)
 income$Median_income = as.numeric(income$Median_income)
 income$Margin_of_error_for_median = as.numeric(income$Margin_of_error_for_median)
@@ -104,7 +105,7 @@ i= income %>%
 Since one of the measures of upward mobility is healthy economy and in turn economic advancement is highly dependent on job advancement, real median household income of different races over time has been demonstrated in Figure 1. Real income has been adjusted for inflation, so in order to effectively assess upward mobility, the effect of inflation to time has been eliminated. It can be clearly observed from Figure 1 that median income of people increased over time by reaching more than $100,000 for Asians. Also, Asians as immigrants (at least first generation of Asians was immigrants) presented the highest median real income, which can determine that by hard work even people from lower class (if we consider immigrants as lower class than local established people) can achieve wealth (which is a main concept of upward mobility). Table 1 showed the slope of the lines for each race, which established the median real income increase between 2000-2021. The results are consistent with the graph that shows people attained higher income over time. It has to be noted that working population of U.S (approximately 131,202 people for 2021) was used to obtain median income value for each year and for each race.
 
 ```{r, figure1, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household income over time for different races"}
-income = fread('tableA2.csv') %>% 
+income = fread('./americandream/tableA2.csv') %>% 
   tibble 
 df= income %>% 
   select(-Margin_of_error_for_median, -Margin_of_error_for_mean) %>% 
@@ -118,6 +119,30 @@ ggplot(df, aes (Year, Median_income, color=Races)) +
          scale_x_continuous(breaks=seq(1993,2021,by=4))+
          scale_fill_brewer(palette = "Set2")
 ```
+```{r, figure2, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household wealth over time for different races"}
+
+combinedNetworthByRace <- read_excel("./americandream/CombinedNetByRace.xlsx",
+                                     col_names = TRUE, skip = 1)
+colnames(combinedNetworthByRace) <- c("race_ethnicity","2000","2002","2004","2005","2009",
+                                      "2010","2011","2013","2014","2015","2016", "2017",
+                                      "2018","2019","2020")
+
+combinedNetByRace_wide <- melt(combinedNetworthByRace, id='race_ethnicity')
+colnames(combinedNetByRace_wide) <-c("race_ethnicity","year","networth")
+combinedNetByRace_wide$race_ethnicity <-as.factor(combinedNetByRace_wide$race_ethnicity)
+combinedNetByRace_wide$year <- as.Date(combinedNetByRace_wide$year,format="%Y")
+suppressWarnings(combinedNetByRace_wide$networth <-as.numeric(combinedNetByRace_wide$networth, na.rm = TRUE))
+
+wealthByRace_chart <- ggplot(combinedNetByRace_wide, aes(x = year, 
+                                                          y = networth, 
+                                                          group = race_ethnicity,
+                                                          color = race_ethnicity )) + 
+ geom_line() + labs(title = "Median Networth by year Grouped By Race/Ethnicity",
+                     x = "Year", y = "Median Net Worth", 
+                     color = "Race/Ethnicity") + theme_minimal()+theme_bw()
+wealthByRace_chart + scale_y_continuous(limit = c(0,250000),labels = scales::comma)
+```
+
 ```{r, table1, echo=FALSE, message=FALSE, warning=FALSE}
 year93 = df %>% 
   select(Year, Median_income, Races) %>% 
@@ -135,7 +160,7 @@ final %>%
 
 Real income of people differ in a certain range. Figure 2 represented percent distribution of household from different races having different range of annual income. The first message of the figures is that comparatively and generally, having small income as between $15,000 to $25,000 or $35,000 to $50,000 decreased over time, which can indicate percent distribution of people who are earning more increased. That can be observed from the income range $150,000 to $200,000 and over $200,000. More than 20% of Asians' annual income is more than $200,000. The sharp increase in number of people who earn more than $200,000 can be noticed after 2013 for all races. Again, that can prove the concept of upward mobility. 
 
-```{r, figure2, echo=FALSE, message=FALSE, warning = FALSE, fig.cap="Percent distribution of real income between certain ranges for different races over time"}
+```{r, figure3, echo=FALSE, message=FALSE, warning = FALSE, fig.cap="Percent distribution of real income between certain ranges for different races over time"}
 dfl = pivot_longer(df, cols = c('15,000_to_24,999' , '35,000_to_49,999', '150,000_to_199,999',  '200,000_and_over'))
 dfl$name= as.factor(dfl$name)
 ggplot(dfl, aes (Year, value, color=Races)) +
@@ -149,7 +174,7 @@ ggplot(dfl, aes (Year, value, color=Races)) +
 
 Since homeownership is a key factor in establishing upward or downward mobility of Americans, Figure 3 represented homeownership rate over time. The housing bubble was a period of rapid growth in the housing market in the early 2000s, fueled by low interest rates and lax lending standards. However, it ultimately led to a crash in 2008, resulting in the foreclosure of millions of homes and a nationwide economic crisis. That trend was followed by The Foreclosure Crisis (2007-2012). The foreclosure crisis was a result of the housing bubble bursting, which led to a high number of foreclosures and a decline in home values. It resulted in many families losing their homes, and the government had to intervene with programs such as the Home Affordable Modification Program (HAMP) and the Home Affordable Refinance Program (HARP). We can observe a grow in homeownership rate after 2015, which did not last long because of the COVID. The COVID-19 pandemic caused a significant economic downturn, resulting in job losses and financial hardship for many households. It also led to a moratorium on evictions and foreclosures to prevent further economic instability. Although a gradual increase in homeownership rate can be observed after 2021, it cannot explicitly prove upward mobility or downward mobility of the population. The homeownership rate can significantly be affected by several factors as mentioned above and plus the price of the houses which considerably increased over time due to economic crisis. The comprehensive demonstration of that tendency was provided in Figure 4. 
 
-```{r, figure3, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Homeownership rate in the United States from 1993 to 2022"}
+```{r, figure4, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Homeownership rate in the United States from 1993 to 2022"}
 home = read.csv('home.csv')
 home$DATE = strptime(as.character(home$DATE), "%m/%d/%Y") %>% 
   as.Date((home$DATE), format = "%d-%m-%y")
@@ -163,7 +188,7 @@ home %>%
          scale_fill_brewer(palette = "Set2")
 ```
 
-```{r, figure4, echo=FALSE, message=FALSE, fig.cap="Average sales price of houses sold for the United States"}
+```{r, figure5, echo=FALSE, message=FALSE, fig.cap="Average sales price of houses sold for the United States"}
 home_price = read.csv('home_price.csv')
 home_price$Date = strptime(as.character(home_price$Date), "%m/%d/%Y") %>% 
   as.Date((home_price$Date), format = "%d-%m-%y")
