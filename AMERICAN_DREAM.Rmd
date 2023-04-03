@@ -352,7 +352,7 @@ ggplot(data = median_income, aes(x=DATE, y=MEFAINUSA646N)) +
   theme_minimal()
 ```
 
-Since 2000, median income growth has been substantial, nearly doubling from ~$50,000 to ~$90,000, with only a slight hiccup as a result of the Global Financial Crisis, before quickly picking up speed again. Similarly, there is a discernable dip as a result of the COVID-19 pandemic, before economic growth (and inflation) rapidly picked up. Overall, however, Americans have experiences long term secular income growth since 2000. 
+Since 2000, median income growth has been substantial, nearly doubling from ~$50,000 to ~$90,000, with only a slight hiccup as a result of the Global Financial Crisis, [figure 12] before quickly picking up speed again. Similarly, there is a discernable dip as a result of the COVID-19 pandemic, before economic growth (and inflation) rapidly picked up. Overall, however, Americans have experiences long term secular income growth since 2000. 
 
 ```{r, figure13, echo=FALSE, message=FALSE, fig.cap="Real Median Income, US"}
 real_median_income$DATE <- as.Date(real_median_income$DATE)
@@ -363,7 +363,7 @@ ggplot(data = real_median_income, aes(x=DATE, y=MEHOINUSA672N)) +
   theme_minimal()
 ```
 
-While median income over time is in fact a useful and interesting metric, it is also the case that inflation can distort what real world income changes look like. By adjusting for inflation as defined in the US consumer price index, the data set gives a better idea of how wages are changing relative to cost of living. Since 2000, we see the impacts of the Global Financial Crisis in 2007-2008. Real wages took some time to recover in the wake of bank failures, mass unemployment, and a deflationary environment, with wages failing to recover until 2015. Since 2015/2016, however, real wages have increased rapidly, from roughly 65,000 to 72,000 circa 2000 US dollars, an increase of nearly 11%. Although beyond the scope of the data explored here, all of these gains have seen a strong negative impact on the heels of historically high CPI over the 2020-2023 period. The Federal Reserve continues to tighten monetary policy in order to attempt to slow inflation, although the long term affects are as yet unclear.
+While median income over time is in fact a useful and interesting metric, it is also the case that inflation can distort what real world income changes look like. By adjusting for inflation [figure 13] as defined in the US consumer price index, the data set gives a better idea of how wages are changing relative to cost of living. Since 2000, we see the impacts of the Global Financial Crisis in 2007-2008. Real wages took some time to recover in the wake of bank failures, mass unemployment, and a deflationary environment, with wages failing to recover until 2015. Since 2015/2016, however, real wages have increased rapidly, from roughly 65,000 to 72,000 circa 2000 US dollars, an increase of nearly 11%. Although beyond the scope of the data explored here, all of these gains have seen a strong negative impact on the heels of historically high CPI over the 2020-2023 period. The Federal Reserve continues to tighten monetary policy in order to attempt to slow inflation, although the long term affects are as yet unclear.
 
 The significant finding though is that despite inflation and major economic pressures from the GFC and COVID-19, Americans have still seen substantial real income growth, indicating an improving quality of life and the ability to pursue the American dream.
 
@@ -377,13 +377,13 @@ ggplot(income_share_summed1, aes(x = Date, y = `Net worth`, color = Category, gr
   theme_minimal()
 ```
 
-Another important factor is how wealth is divided among the population. If we were to see net worth / assets etc divided extremely unevenly, it would be a sign that perhaps the majority of the population is not getting access to the same opportunities.
+Another important factor is how wealth is divided among the population [figure 14]. If we were to see net worth / assets etc divided extremely unevenly, it would be a sign that perhaps the majority of the population is not getting access to the same opportunities.
 
 That is unfortunately what we see however, with the bottom 50% of the population holding less than 10% of the net worth share. Perhaps more optimistically, however, we do see that the 10th to 50th percentiles pull in over 30% of net worth, although this trend is decreasing ever so slightly over time. While the 30% is less than their representation in the population, it does indicate that reaching upper middle class levels is strongly correlated to success and achieving the American Dream. Despite that, it is clear that work needs to be done to consider how we can best encourage the economic fortunes of the bottom 50%.
 
-We see a similar pattern when it comes to Asset distribution, with the top 10% holding a severely disproportionate share of total assets. More encouraging, however, we see that the top 40% and bottom 50% hold a significant portion of home mortgages, indicating that many are still able to mortgage a home and achieve that ever so important element of the American Dream. 
+We see a similar pattern when it comes to Asset distribution [figure 17], with the top 10% holding a severely disproportionate share of total assets. More encouraging, however, we see that the top 40% and bottom 50% hold a significant portion of home mortgages [figure 16], indicating that many are still able to mortgage a home and achieve that ever so important element of the American Dream. 
 
-Lastly, we see that lower and middle classes hold the lionshare of consumer credit. This points to some problems, as consumer credit often arises as a result of cash shortages. So lower classes may be achieving certain elements of the American Dream, although they are likely shackling themselves with debt that, long term, may be keeping them from advancing as far as they otherwise could.
+Lastly, we see that lower and middle classes hold the lion share of consumer credit [figure 15. This points to some problems, as consumer credit often arises as a result of cash shortages. So lower classes may be achieving certain elements of the American Dream, although they are likely shackling themselves with debt that, long term, may be keeping them from advancing as far as they otherwise could.
 
 
 ```{r, figure15, echo=FALSE, message=FALSE, fig.cap="Share of Consumer Credit by Economic Class"}
