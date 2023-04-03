@@ -216,7 +216,7 @@ Per capita personal income is total personal income divided by total midyear pop
 As shown in Figure 5 below, americans per capita personal income has doubled over the last two decades. As expected, states in the Mid-Atlantic, Northeast, and Hawaii are among states with highest per capita personal income. 
 
 
-````{r, figure15, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Per capita personal in the United States from 2000 to 2021"}
+```{r, figure15, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Per capita personal in the United States from 2000 to 2021"}
 
 df <- fread('dream.csv')
 df2 <- melt(df, id = c("GeoFips", "State")) %>%
