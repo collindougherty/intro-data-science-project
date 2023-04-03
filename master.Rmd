@@ -1,6 +1,6 @@
 ---
 title: "The American Dream: A Promise of Upward Mobility"
-author: "Akbota Atibayeva, Colin Dougherty, Fidel Nkwocha, Panawe Mewenemesse, Jerry Gallagher"
+author: "Akbota Atibayeva, Collin Dougherty, Fidel Nkwocha, Panawe Mewenemesse, Jerry Gallagher"
 output: pdf_document
 date: "2023-04-02"
 ---
