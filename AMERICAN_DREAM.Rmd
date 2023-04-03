@@ -14,84 +14,93 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 \subsection{Background}
 The American Dream is an idea that has been embedded in the American psyche for decades. It is a concept that has been held up as a beacon of hope and a promise of a better future for generations of Americans. At its core, the American Dream is the belief that anyone, regardless of their background or social status, can achieve success and prosperity through hard work and determination. The American Dream has its roots in the early days of American history, when immigrants came to the United States seeking religious freedom and economic opportunity. The idea of the "land of opportunity" and the promise of a better future for oneself and one's family has been a driving force for generations of immigrants who have come to America in search of a better life. The concept has been depicted in literature, art, and film, and has been the inspiration for millions of people who have come to the United States in search of a better life. Although immigrants are a minority in the United States, the truth is that  the majority of the population are the descendants of immigrants who came to the United States seeking the American Dream.
 
-
 \subsection{Motivation}
-For some people, the American Dream is synonymous with upward mobility – the idea that one can start at the bottom and work their way up to the top. We are motivated to study the extent to which the American population experiences upward mobility.  As we analyze publicly available dataset, we expect to see some periods of upward and downward trends in mobility. An upward trend would happen when an individual moves from a lower to a higher socioeconomic status, and a downward trend would happen when an individual moves from a higher socioeconomic status to a lower one.  While upward mobility is often seen as desirable, downward mobility can be a significant challenge, as it can lead to a loss of income, status, and opportunities. However, it is important to note that both upward and downward mobility are natural and inevitable aspects of social mobility.
+For some people, the American Dream is synonymous with **upward mobility – the idea that one can start at the bottom and work their way up to the top**. We are motivated to study the extent to which the American population experiences upward mobility.  As we analyze publicly available dataset, we expect to see some periods of upward and downward trends in mobility. An upward trend would happen when an individual moves from a lower to a higher socioeconomic status, and a downward trend would happen when an individual moves from a higher socioeconomic status to a lower one.  While upward mobility is often seen as desirable, downward mobility can be a significant challenge, as it can lead to a loss of income, status, and opportunities. However, it is important to note that both upward and downward mobility are natural and inevitable aspects of social mobility.
 
-Investopedia [8] defines the American Dream as “...  the belief that anyone, regardless of where they were born or what class they were born into, can attain their own version of success in a society in which upward mobility is possible for everyone. The American dream is believed to be achieved through sacrifice, risk-taking, and hard work, rather than by chance.” It was popularized in the 1930s by historian James Truslow Adams, who defined it as "that dream of a land in which life should be better and richer and fuller for everyone, with opportunity for each according to ability or achievement."  However, there are some differing opinions today on the American Dream.  Is it an illusion? Or is it a reality? By analyzing trends and data, we would let the data help guide the opinions on this subject. 
+Investopedia [^8] defines the American Dream as “...  the belief that anyone, regardless of where they were born or what class they were born into, can attain their own version of success in a society in which upward mobility is possible for everyone. The American dream is believed to be achieved through sacrifice, risk-taking, and hard work, rather than by chance.” It was popularized in the 1930s by historian James Truslow Adams, who defined it as "that dream of a land in which life should be better and richer and fuller for everyone, with opportunity for each according to ability or achievement."  However, there are some differing opinions today on the American Dream.  Is it an illusion? Or is it a reality? By analyzing trends and data, we would let the data help guide the opinions on this subject. 
 
-Exploring the American Dream and upward mobility is important for a few reasons:
-Understanding social mobility: Exploring the concept of upward mobility helps us understand how social mobility works in society. It allows us to examine the factors that contribute to success, including education, hard work, and access to resources.
-Encouraging aspiration: Examining the American Dream and upward mobility can also inspire people to pursue their goals and dreams. By seeing examples of success and learning about the factors that contribute to it, people can be encouraged to work hard and strive for their own upward mobility.
+Exploring the American Dream and upward mobility is important for a few reasons:  
+\begin{enumerate}
+\item Understanding social mobility: Exploring the concept of upward mobility helps us understand how social mobility works in society. It allows us to examine the factors that contribute to success, including education, hard work, and access to resources. 
+\item Encouraging aspiration: Examining the American Dream and upward mobility can also inspire people to pursue their goals and dreams. By seeing examples of success and learning about the factors that contribute to it, people can be encouraged to work hard and strive for their own upward mobility. 
+\end{enumerate}
 
-For some people, the American Dream could mean achieving financial success, owning a home, or attaining a certain level of social status. However, there are others who see the American Dream as more than just material success; they view it as the ability to live a fulfilling life, to pursue their passions and dreams, and to have a sense of purpose and meaning in life. 
+For some people, the American Dream could mean achieving financial success, owning a home, or attaining a certain level of social status. However, there are others who see the American Dream as more than just material success; they view it as the ability to live a fulfilling life, to pursue their passions and dreams, and to have a sense of purpose and meaning in life.
 
-
-\subsection{Research Question(s)}
+\subsection{Research question (s)}
 By the end of this research paper, we plan to shed some light on the following questions:
-How has the upward mobility among diverse populations in the United States changed from 2000 to 2021?
-Are Americans attaining wealth?
-Are Americans achieving the dream of home ownership? 
-Are immigrants still seeking entry into America? 
+\begin{enumerate}
+\item How has the upward mobility among diverse populations in the United States changed from 2000 to 2021? 
+  \begin{itemize}
+    \item Are Americans attaining wealth?
+    \item Are Americans achieving the dream of home ownership?
+  \end{itemize}
+\item Are immigrants still seeking entry into America? 
+\end{enumerate}
 
 
 \section{Data}
-\subsection{Data Background and Sources}
 In this research, we will borrow the majority of our data from the United States Census Bureau.  The census.gov website provides us with several decades of data for the American population.  The federal reserve as well as the bureau of economic analysis data repositories also provide us with many years income and wealth data. 
 
-We will use the datasets for wealth [1][2][9][10][11] to see the median assets of Americans.  This data includes information for net worth, assets at financial institutions (i.e., checking account and other interest-earning accounts), stocks and mutual fund shares, equity in business or profession, equity in own home, equity in motor vehicles, equity in rental properties, equity in other real estate, retirement accounts (i.e., IRA and 401(k)), educational savings accounts, annuities/Trusts, cash value life insurance, and other assets. There is a separate Excel file for each year on wealth data.  And each wealth Excel file has several tabs. The data is provided for the general population and broken down by demographics (i.e., race, age groups, education, and household size. The Census Bureau also provides us with a state-by-state breakdown of the same wealth data [3]. And just like nation-wide wealth data, the state data is provided in a separate Excel file for each year.  From another Census Bureau dataset, we obtained household income data for the general population and by race for years 1967 through 2021 [4]. In this dataset, we see the percent distribution for different income ranges, the median income, and mean income for each year. 
+We will use the datasets for wealth [^1][^2][^9][^10][^11] to see the median assets of Americans.  This data includes information for net worth, assets at financial institutions (i.e., checking account and other interest-earning accounts), stocks and mutual fund shares, equity in business or profession, equity in own home, equity in motor vehicles, equity in rental properties, equity in other real estate, retirement accounts (i.e., IRA and 401(k)), educational savings accounts, annuities/Trusts, cash value life insurance, and other assets. There is a separate Excel file for each year on wealth data.  And each wealth Excel file has several tabs. The data is provided for the general population and broken down by demographics (i.e., race, age groups, education, and household size. The Census Bureau also provides us with a state-by-state breakdown of the same wealth data [^3]. And just like nation-wide wealth data, the state data is provided in a separate Excel file for each year.  From another Census Bureau dataset, we obtained household income data for the general population and by race for years 1967 through 2021 [^4]. In this dataset, we see the percent distribution for different income ranges, the median income, and mean income for each year. 
 
-For immigration data, we will borrow from three different datasets.  The first dataset provides us data for annual immigration, outmigration, net migration, and movers from abroad by regions (northeast, midwest, west, and south : 1981-2021 [5]. The second immigration dataset informs us of how many visas the United States government issued to foreigners [6].  The visas dataset includes all nonimmigrant visas issued, including temporary visitors coming for work, school, or tourism. Visas vary in duration depending on the reason they are issued. Lawful permanent residents, also known as "green card" holders, are excluded from the visas dataset.  And finally, we have another dataset for asylum claims granted by the U.S government  [7]. Usually, an individual would seek asylum when he or she is unable or unwilling to return to his or her home country due to persecution or a well-founded fear of persecution due to race, religion, nationality, membership in a particular social group, or political opinion. Asylum seekers apply either at a United States port of entry or from within the US..
+For immigration data, we will borrow from three different datasets.  The first dataset provides us data for annual inmigration, outmigration, net migration, and movers from abroad by regions (northeast, midwest, west, and south : 1981-2021 [^5]. The second immigration dataset informs us of how many visas the United States government issued to foreigners [^6].  The visas dataset includes all nonimmigrant visas issued, including temporary visitors coming for work, school, or tourism. Visas vary in duration depending on the reason they are issued. Lawful permanent residents, also known as "green card" holders, are excluded from the visas dataset.  And finally, we have another dataset for asylum claims granted by the U.S government  [^7]. Usually, an individual would seek asylum when he or she is unable or unwilling to return to his or her home country due to persecution or a well-founded fear of persecution due to race, religion, nationality, membership in a particular social group, or political opinion. Asylum seekers apply either at a United States port of entry or from within the US.
 
-Since some of our Excel files we used have multiple tabs (spreadsheets), multiple header columns, and random notes embedded across multiple columns, we found it necessary to clean and reorganize some of the datasets. 
+\subsection{Data background and sources}
 
 \subsection{Brief description of data}
-hmm
+
 
 \section{Exploratory Data Analysis}
-\subsection{Data Cleaning}
+\subsection{Data cleaning}
+Since some of the Excel files we used have multiple tabs (spreadsheets), multiple header columns, and random notes embedded across multiple columns, we found it necessary to clean and reorganize some of the datasets.
+
 Cleaning of income data (tableA2.csv) has comprised several steps. Besides manual cleaning of the data, it has been explored for NAs, then they have been omitted. In general, the data was filtered, selected reshaped (melted) and merged (full_join) to efficiently produce visualizations.The class of certain columns were changed to numeric or to factor. Some of the column names were renamed. 
 
-The data sets 'home' and 'home_price' were basically clean. However, the most challenging part in working with those data was changing class type from character to date. Since usual codes did not work, other approaches were implemented and data were successfully visualized.   
+The data sets 'home' and 'home_price' were basically clean. However, the most challenging part in working with those data was changing class type from character to date. Since usual codes did not work, other approaches were implemented and data were successfully visualized.
 
-\subsection{Data Summary}
+The immigration dataset 'hst_mig_a_2.csv' arranged the data in segments of year ranges and regions.  One single column, named "Mobility Period and Type of Migration," was used to show both the year ranges and the regions.  We had to separate the two into their own individual columns and named the modified dataset as 'hst_mig_a_2_ReOrganized.csv'.
 
-The immigration dataset hst_mig_a_2.xlsx arranged the data in segments of year ranges and regions.  One single column, named "Mobility Period and Type of Migration," was used to show both the year ranges and the regions.  We had to separate the two into their own individual columns.
+The visas dataset 'visas_granted_usafacts.csv' arranged the data in a wide fashion, with the row names at the far left column.  We selected the first row named "Years" and the second row named "Visas granted (People)."  We transposed the first and second rows into two columns named "Years" and "Visas".
 
-The visas dataset visas_granted_usafacts.csv arranged the data in a wide fashion, with the row names at the far left column.  We selected the first row named "Years" and the second row named "Visas granted (People)."  We transposed the first and second rows into two columns named "Years" and "Visas".
+The asylums dataset 'asylum_claims_granted_usafacts.csv' arranged the data in a wide fashion, with the row names at the far left column, just like what we saw in the visas dataset. We selected the first row named "Years" and the second row named "Asylum claims granted (People)." We transposed the first and second rows into two columns named "Years" and "Asylums".
 
-The asylums dataset asylum_claims_granted_usafacts.csv arranged the data in a wide fashion, with the row names at the far left column, just like what we saw in the visas dataset. We selected the first row named "Years" and the second row named "Asylum claims granted (People)." We transposed the first and second rows into two columns named "Years" and "Asylums".
 
+\subsection{Data summary}
 
 \subsection{Findings and Explanations}
 talk about graphs here. cite figure #s
 
-```{r, echo=FALSE, message=FALSE}
+```{r, load-packages, setup, include=FALSE}
 rm(list = ls(all.names = TRUE))
 cat("\014")
-library(skimr)
 library(data.table)
-library(dplyr)
-library(ggplot2)
-library(tidyr)
-library(kableExtra)
-library(tidyverse)
-library(usmap)
-library(janitor)
-library(ggeasy)
+library(GGally)
 library(gganimate)
-library(transformr)
-library(patchwork)
-library(reshape2)
-library(gridExtra)
+library(ggeasy)
+library(ggplot2)
 library(grid)
+library(gridExtra)
+library(janitor)
+library(kableExtra)
+library(knitr)
+library(mdsr)
+library(naniar)
+library(patchwork)
 library(readxl)
+library(skimr)
+library(stats)
+library(stringr)
+library(tidyr)
+library(transformr)
+library(usmap)
+library(zoo)
+options(scipen = 999)
 suppressMessages(library(tidyverse))
+suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(reshape2))
 suppressPackageStartupMessages(library(scales))
-suppressPackageStartupMessages(library(dplyr))
-options(scipen = 999)
-library(zoo)
+opts_chunk$set(fig.align='center', message=FALSE, warning=FALSE)
 ```
 
 
@@ -153,7 +162,7 @@ wealthByRace_chart + scale_y_continuous(limit = c(0,250000),labels = scales::com
 
 ```{r, figure3, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household wealth over time for different Education"}
 
-combinedNetByEd <- read_excel("~/projects/americandream/CombinedNetByEd.xlsx",col_names = TRUE, skip = 1)
+combinedNetByEd <- read_excel("CombinedNetByEd.xlsx",col_names = TRUE, skip = 1)
 colnames(combinedNetByEd) <- c("ed_house","2000","2002","2004","2005","2009","2010","2011","2013","2014","2015","2016","2017","2018","2019","2020")
 
 combinedNetByEd_wide <- melt(combinedNetByEd, id='ed_house')
@@ -305,7 +314,7 @@ ggplot(data = compomelt2, aes(x = percentile_group, y = percent, fill = `Wealth 
 ```
 
 ```{r, figure10, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household wealth over time for different ages"}
-combinedNetByAge <- read_excel("./americandream/CombinedNetByAge.xlsx",col_names = TRUE, skip = 2)
+combinedNetByAge <- read_excel("americandream/CombinedNetByAge.xlsx",col_names = TRUE, skip = 2)
 colnames(combinedNetByAge) <- c("age_house","2000","2002","2004","2005","2009","2010","2011","2013","2014","2015","2016","2017","2018","2019","2020")
 
 combinedNetByAge_wide <- melt(combinedNetByAge, id='age_house')
@@ -414,6 +423,93 @@ ggplot(income_share_summed4, aes(x = Date, y = Assets, color = Category, group =
 ```
 
 
+One of the ways we can measure if people are still seeking the the American Dream is to look at the number of immigrants entering the United States. Using a line graph to visualize the number people who migrated to the United State from 2000 to 2021, as seen in Figure 18, we notice a decline of steady decline since 2019.
+```{r, figure18, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Immigration into the United States (Numbers in thousand)"}
+immigrations <-read.csv("hst_mig_a_2_ReOrganized.csv", header = TRUE)
+immigrantsDF <-  rename(immigrations, Region = TypeOfMigration) %>%
+                na.omit()
+
+ggplot(immigrantsDF, 
+        aes(x = MobilityPeriod, y = MoversFromAbroad, color = Region, group = Region)) +
+    geom_line() +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+    labs(x="Mobility Periods", y = "Immigrants")
+```
+
+
+Using a box plot graph to visualize the number people who migrated to the United State from 2000 to 2021, we show the median for each region for each the years as shown in Figure 19.  We also see a decreasing trend since 2019.
+```{r, figure19, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Immigration into the United States (Numbers in thousand)"}
+ggplot(data=immigrantsDF, aes(x=MobilityPeriod, y=MoversFromAbroad)) +
+        geom_point(aes(color=Region), alpha=0.2, position="jitter") +
+        geom_boxplot(outlier.size=0, alpha=0.1) +
+        theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+        theme(legend.position="right") +
+        labs(x="Mobility Periods", y = "Immigrants")
+```
+
+Using a bar chart to visualize the immigration data, we see the total number of immigrants entering the United States for each region from 2000 through 2021 in Figure 20.
+```{r, figure20, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Total Immigration (in thousands) from 2000 to 2021"}
+ggplot(immigrantsDF,aes(MoversFromAbroad,Region), label=Region)+
+  geom_bar(stat="identity", col="lightblue")+
+  labs(x="Immigrants", y = "Region")+
+  coord_flip()
+```
+
+
+To help explain the downward trend of immigration, we decided to look at the number of U.S visas issued to foreigners. Just as we suspected, as seen in Figure 21, our visualization of the visas dataset confirms a correlation between the number of visas issued and the number of immigrants entering the United States.
+```{r, figure21, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Visas Issued by the United States from 2000 to 2021 (Number in thousands)"}
+visa <-read.csv("visas_granted_usafacts.csv", header = FALSE)
+visa <- visa[1:2,] # grab only the first 2 rows
+transposedVisa <- t(visa) %>%
+                na.omit() 
+rownames(transposedVisa)<-NULL #remove row names
+colnames(transposedVisa) = transposedVisa[1,] # copy first row to header
+transposedVisa <- transposedVisa[-1,] # delete the first row since it was converted to header
+transposedVisa <- as.data.frame(transposedVisa)
+i <- c(1, 2)  # columns to convert from string to number and trim white spaces
+transposedVisa[ , i] <- sapply(transposedVisa[ , i], 
+                                function(x) as.numeric(str_remove_all(x," ")))
+transposedVisa <-  rename(transposedVisa, Visas = "Visas granted (People)") %>%
+                na.omit()
+
+visaDF <- transposedVisa %>%
+        na.omit() %>%
+        filter(Years >= 2000) %>%
+        mutate(Visas = Visas/1000)
+ggplot(visaDF, aes(Years, Visas)) +
+      geom_line(lwd=1) +
+      theme_bw() +
+      labs(x="Years", y = "Visas")
+```
+
+
+To further explain the downward trend of immigration, we decided to look at the number of asylum claims the U.S granted to foreigners. Just as we suspected, as shown in Figure 22, our visualization of the asylums dataset confirms a correlation between the number of asylums claims granted and the number of immigrants entering the United States.
+```{r, figure22, echo=FALSE, message=FALSE,warning=FALSE, fig.cap="Asylums Granted by the United States from 2000 to 2021 (Number in thousands)"}
+asylum <-read.csv("asylum_claims_granted_usafacts.csv", header = FALSE)
+asylum <- asylum[1:2,] # grab only the first 2 rows
+transposedAsylums <- t(asylum) %>%
+                na.omit() 
+rownames(transposedAsylums)<-NULL #remove row names
+colnames(transposedAsylums) = transposedAsylums[1,] # copy first row to header
+transposedAsylums <- transposedAsylums[-1,] # delete the first row since it was converted to header
+transposedAsylums <- as.data.frame(transposedAsylums)
+i <- c(1, 2)  # columns to convert from string to number and trim white spaces
+transposedAsylums[ , i] <- sapply(transposedAsylums[ , i], 
+                                function(x) as.numeric(str_remove_all(x," ")))
+transposedAsylums <-  rename(transposedAsylums, Asylums = "Asylum claims granted (People)") %>%
+                              na.omit()
+
+asylumDF <- transposedAsylums %>%
+        na.omit() %>%
+        filter(Years >= 2000) %>%
+        mutate(Asylums = Asylums/1000)
+ggplot(asylumDF, aes(Years, Asylums)) +
+      geom_line(lwd=1) +
+      theme_bw() +
+      labs(x="Years", y = "Asylums")
+```
+
 
 
 \section{Future Work}
@@ -429,3 +525,22 @@ kable(df, align = "l")|>
  column_spec(2, width = "4cm")|>
  column_spec(3, width = "10cm")
 ```
+
+
+\section{References}
+[^1]: https://www2.census.gov/programs-surveys/demo/tables/wealth/2020/wealth-asset-ownership/Wealth_tables_dy2020.xlsx
+[^2]: https://www.census.gov/topics/income-poverty/wealth/data/tables.All.List_2110684178.html#list-tab-List_2110684178
+[^3]: https://www2.census.gov/programs-surveys/demo/tables/wealth/2020/wealth-asset-ownership/State_Wealth_tables_dy2020.xlsx
+[^4]: 
+https://www2.census.gov/programs-surveys/demo/tables/p60/276/tableA2.xlsx
+[^5]: https://www2.census.gov/programs-surveys/demo/tables/geographic-mobility/time-series/historic/hst_mig_a_2.xlsx
+[^6]: https://a.usafacts.org/api/v4/Metrics/csv/25906?&_ga=2.244264198.2048794940.1680399322-1530464110.1680399322&_gac=1.242036406.1680399340.EAIaIQobChMIhvewhoeK_gIVBWpvBB3bzgsgEAMYASAAEgJfGvD_BwE
+[^7]: https://a.usafacts.org/api/v4/Metrics/csv/13021?&_ga=2.218415642.2048794940.1680399322-1530464110.1680399322&_gac=1.3868548.1680399340.EAIaIQobChMIhvewhoeK_gIVBWpvBB3bzgsgEAMYASAAEgJfGvD_BwE
+[^8]: 
+https://www.investopedia.com/terms/a/american-dream.asp
+[^9]:
+https://fred.stlouisfed.org/series/MEHOINUSA672N
+[^10]: 
+https://fred.stlouisfed.org/series/MEFAINUSA646N
+[^11]: 
+https://fred.stlouisfed.org/series/WFRBLB50107
