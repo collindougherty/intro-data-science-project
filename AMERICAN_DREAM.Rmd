@@ -150,6 +150,7 @@ wealthByRace_chart <- ggplot(combinedNetByRace_wide, aes(x = year,
                      color = "Race/Ethnicity") + theme_minimal()+theme_bw()
 wealthByRace_chart + scale_y_continuous(limit = c(0,250000),labels = scales::comma)
 ```
+Wealth distribution varies across different races, and Asians tend to accumulate the most wealth in the United States. This can be attributed to various factors, such as their high levels of education, higher average income, and high percentage of investment. As a result, Asians have the highest median household wealth just over $200,000, as shown in Figure 2. Meanwhile, other races such as Black and Hispanic households have lower median household wealth. Nonetheless, it is important to note that wealth and income while highly correlated, many other factors such as education, and age impact one's overall wealth. 
 
 ```{r, figure3, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household wealth over time for different Education"}
 
@@ -163,8 +164,7 @@ combinedNetByEd_wide$year <- as.Date(combinedNetByEd_wide$year,format="%Y")
 suppressWarnings(combinedNetByEd_wide$networth <-as.numeric(combinedNetByEd_wide$networth, na.rm = TRUE))
 
 wealthByEd_chart <- ggplot(combinedNetByEd_wide, aes(x = year, y = networth, group = ed_house, color = ed_house )) + 
-  geom_line() + labs(title = "Median Networth by year Grouped By Education",
-                     x = "Year", y = "Median Networth", 
+  geom_line() + labs(x = "Year", y = "Median Networth", 
                      color = "Education of Householder") + theme_bw()
 wealthByEd_chart + scale_y_continuous(limits = c(0,450000),labels = scales::comma)
 ```
