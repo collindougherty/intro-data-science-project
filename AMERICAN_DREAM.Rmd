@@ -26,7 +26,7 @@ Encouraging aspiration: Examining the American Dream and upward mobility can als
 For some people, the American Dream could mean achieving financial success, owning a home, or attaining a certain level of social status. However, there are others who see the American Dream as more than just material success; they view it as the ability to live a fulfilling life, to pursue their passions and dreams, and to have a sense of purpose and meaning in life. 
 
 
-\subsection{Research question(s)}
+\subsection{Research Question(s)}
 By the end of this research paper, we plan to shed some light on the following questions:
 How has the upward mobility among diverse populations in the United States changed from 2000 to 2021?
 Are Americans attaining wealth?
@@ -35,7 +35,7 @@ Are immigrants still seeking entry into America?
 
 
 \section{Data}
-\subsection{Data background and sources}
+\subsection{Data Background and Sources}
 In this research, we will borrow the majority of our data from the United States Census Bureau.  The census.gov website provides us with several decades of data for the American population.  The federal reserve as well as the bureau of economic analysis data repositories also provide us with many years income and wealth data. 
 
 We will use the datasets for wealth [1][2][9][10][11] to see the median assets of Americans.  This data includes information for net worth, assets at financial institutions (i.e., checking account and other interest-earning accounts), stocks and mutual fund shares, equity in business or profession, equity in own home, equity in motor vehicles, equity in rental properties, equity in other real estate, retirement accounts (i.e., IRA and 401(k)), educational savings accounts, annuities/Trusts, cash value life insurance, and other assets. There is a separate Excel file for each year on wealth data.  And each wealth Excel file has several tabs. The data is provided for the general population and broken down by demographics (i.e., race, age groups, education, and household size. The Census Bureau also provides us with a state-by-state breakdown of the same wealth data [3]. And just like nation-wide wealth data, the state data is provided in a separate Excel file for each year.  From another Census Bureau dataset, we obtained household income data for the general population and by race for years 1967 through 2021 [4]. In this dataset, we see the percent distribution for different income ranges, the median income, and mean income for each year. 
