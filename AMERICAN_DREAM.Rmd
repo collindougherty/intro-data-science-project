@@ -77,6 +77,13 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 library(kableExtra)
+library(readxl)
+suppressMessages(library(tidyverse))
+suppressPackageStartupMessages(library(reshape2))
+suppressPackageStartupMessages(library(scales))
+suppressPackageStartupMessages(library(dplyr))
+library(ggplot2)
+options(scipen = 999)
 library(zoo)
 ```
 
