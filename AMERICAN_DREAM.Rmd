@@ -147,8 +147,7 @@ wealthByRace_chart <- ggplot(combinedNetByRace_wide, aes(x = year,
                                                           y = networth, 
                                                           group = race_ethnicity,
                                                           color = race_ethnicity )) + 
- geom_line() + labs(title = "Median Networth by year Grouped By Race/Ethnicity",
-                     x = "Year", y = "Median Net Worth", 
+ geom_line() + labs(x = "Year", y = "Median Net Worth", 
                      color = "Race/Ethnicity") + theme_minimal()+theme_bw()
 wealthByRace_chart + scale_y_continuous(limit = c(0,250000),labels = scales::comma)
 ```
@@ -314,7 +313,7 @@ median_income$DATE <- as.Date(median_income$DATE)
 median_income <- median_income %>% filter(DATE > "1999-01-01")
 ggplot(data = median_income, aes(x=DATE, y=MEFAINUSA646N)) + 
   geom_line(color = "Dark Green") +
-  labs(x = 'Year', y = 'Median Income', title=element_text(face = "bold", size = 14, "Median Income Over Time, US"), subtitle = "Americans are making more than ever.") +
+  labs(x = 'Year', y = 'Median Income') +
   theme_minimal()
 ```
 
@@ -325,7 +324,7 @@ real_median_income$DATE <- as.Date(real_median_income$DATE)
 real_median_income <- real_median_income %>% filter(DATE > "1999-01-01")
 ggplot(data = real_median_income, aes(x=DATE, y=MEHOINUSA672N)) + 
   geom_line(color = "Dark Green") +
-  labs(x = 'Year', y = 'Real Median Income', title=element_text(face = "bold", size = 14, "Real Median Income Over Time, US"), subtitle = "Even when adjusting for inflation, Americans are making more than ever.") +
+  labs(x = 'Year', y = 'Real Median Income') +
   theme_minimal()
 ```
 
@@ -339,7 +338,7 @@ income_share_summed1 <- aggregate(`Net worth` ~ Date + Category, data = income_s
 # Create a ggplot object with Bottom50 net worth over time
 ggplot(income_share_summed1, aes(x = Date, y = `Net worth`, color = Category, group = Category)) +
   geom_line() +
-  labs(x = "Date", y = "Percentage", title = "Share of Net Worth By Economic Class") +
+  labs(x = "Date", y = "Percentage") +
   theme_minimal()
 ```
 
@@ -357,7 +356,7 @@ income_share_summed2 <- aggregate(`Consumer credit` ~ Date + Category, data = in
 # Create a ggplot object with Bottom50 net worth over time
 ggplot(income_share_summed2, aes(x = Date, y = `Consumer credit`, color = Category, group = Category)) +
   geom_line() +
-  labs(x = "Date", y = "Percentage", title = "Share of Consumer Credit by Economic Class") +
+  labs(x = "Date", y = "Percentage") +
   theme_minimal()
 ```
 
@@ -366,7 +365,7 @@ income_share_summed3 <- aggregate(`Home mortgages` ~ Date + Category, data = inc
 # Create a ggplot object with Bottom50 net worth over time
 ggplot(income_share_summed3, aes(x = Date, y = `Home mortgages`, color = Category, group = Category)) +
   geom_line() +
-  labs(x = "Date", y = "Percentage", title = "Share of Mortgages by Economic Class") +
+  labs(x = "Date", y = "Percentage") +
   theme_minimal()
 ```
 
@@ -375,7 +374,7 @@ income_share_summed4 <- aggregate(Assets ~ Date + Category, data = income_share,
 # Create a ggplot object with Bottom50 net worth over time
 ggplot(income_share_summed4, aes(x = Date, y = Assets, color = Category, group = Category)) +
   geom_line() +
-  labs(x = "Date", y = "Percentage of all Net Worth in US", title = "Share of Assets by Economic Class") +
+  labs(x = "Date", y = "Percentage of all Net Worth in US") +
   theme_minimal()
 ```
 
