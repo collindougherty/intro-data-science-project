@@ -1,6 +1,6 @@
 ---
 title: "The American Dream: A Promise of Upward Mobility"
-author: "Akbota Atibayeva, Colin Dougherty, Fidel Nkwocha, Panawe Mewenemesse, Jerry Gallagher"
+author: "Akbota Atibayeva, Collin Dougherty, Fidel Nkwocha, Panawe Mewenemesse, Jerry Gallagher"
 output: pdf_document
 date: "2023-04-02"
 ---
@@ -11,22 +11,62 @@ knitr::opts_chunk$set(echo = TRUE)
 
 \section{Introduction}
 \subsection{Background}
+The American Dream is an idea that has been embedded in the American psyche for decades. It is a concept that has been held up as a beacon of hope and a promise of a better future for generations of Americans. At its core, the American Dream is the belief that anyone, regardless of their background or social status, can achieve success and prosperity through hard work and determination. The American Dream has its roots in the early days of American history, when immigrants came to the United States seeking religious freedom and economic opportunity. The idea of the "land of opportunity" and the promise of a better future for oneself and one's family has been a driving force for generations of immigrants who have come to America in search of a better life. The concept has been depicted in literature, art, and film, and has been the inspiration for millions of people who have come to the United States in search of a better life. Although immigrants are a minority in the United States, the truth is that  the majority of the population are the descendants of immigrants who came to the United States seeking the American Dream.
+
+
 \subsection{Motivation}
-\subsection{Research question (s)}
+For some people, the American Dream is synonymous with upward mobility – the idea that one can start at the bottom and work their way up to the top. We are motivated to study the extent to which the American population experiences upward mobility.  As we analyze publicly available dataset, we expect to see some periods of upward and downward trends in mobility. An upward trend would happen when an individual moves from a lower to a higher socioeconomic status, and a downward trend would happen when an individual moves from a higher socioeconomic status to a lower one.  While upward mobility is often seen as desirable, downward mobility can be a significant challenge, as it can lead to a loss of income, status, and opportunities. However, it is important to note that both upward and downward mobility are natural and inevitable aspects of social mobility.
+
+Investopedia [8] defines the American Dream as “...  the belief that anyone, regardless of where they were born or what class they were born into, can attain their own version of success in a society in which upward mobility is possible for everyone. The American dream is believed to be achieved through sacrifice, risk-taking, and hard work, rather than by chance.” It was popularized in the 1930s by historian James Truslow Adams, who defined it as "that dream of a land in which life should be better and richer and fuller for everyone, with opportunity for each according to ability or achievement."  However, there are some differing opinions today on the American Dream.  Is it an illusion? Or is it a reality? By analyzing trends and data, we would let the data help guide the opinions on this subject. 
+
+Exploring the American Dream and upward mobility is important for a few reasons:
+Understanding social mobility: Exploring the concept of upward mobility helps us understand how social mobility works in society. It allows us to examine the factors that contribute to success, including education, hard work, and access to resources.
+Encouraging aspiration: Examining the American Dream and upward mobility can also inspire people to pursue their goals and dreams. By seeing examples of success and learning about the factors that contribute to it, people can be encouraged to work hard and strive for their own upward mobility.
+
+For some people, the American Dream could mean achieving financial success, owning a home, or attaining a certain level of social status. However, there are others who see the American Dream as more than just material success; they view it as the ability to live a fulfilling life, to pursue their passions and dreams, and to have a sense of purpose and meaning in life. 
+
+
+\subsection{Research Question(s)}
+By the end of this research paper, we plan to shed some light on the following questions:
+How has the upward mobility among diverse populations in the United States changed from 2000 to 2021?
+Are Americans attaining wealth?
+Are Americans achieving the dream of home ownership? 
+Are immigrants still seeking entry into America? 
 
 
 \section{Data}
-\subsection{Data background and sources}
-\subsection{Brief description of data}
+\subsection{Data Background and Sources}
+In this research, we will borrow the majority of our data from the United States Census Bureau.  The census.gov website provides us with several decades of data for the American population.  The federal reserve as well as the bureau of economic analysis data repositories also provide us with many years income and wealth data. 
 
+We will use the datasets for wealth [1][2][9][10][11] to see the median assets of Americans.  This data includes information for net worth, assets at financial institutions (i.e., checking account and other interest-earning accounts), stocks and mutual fund shares, equity in business or profession, equity in own home, equity in motor vehicles, equity in rental properties, equity in other real estate, retirement accounts (i.e., IRA and 401(k)), educational savings accounts, annuities/Trusts, cash value life insurance, and other assets. There is a separate Excel file for each year on wealth data.  And each wealth Excel file has several tabs. The data is provided for the general population and broken down by demographics (i.e., race, age groups, education, and household size. The Census Bureau also provides us with a state-by-state breakdown of the same wealth data [3]. And just like nation-wide wealth data, the state data is provided in a separate Excel file for each year.  From another Census Bureau dataset, we obtained household income data for the general population and by race for years 1967 through 2021 [4]. In this dataset, we see the percent distribution for different income ranges, the median income, and mean income for each year. 
+
+For immigration data, we will borrow from three different datasets.  The first dataset provides us data for annual immigration, outmigration, net migration, and movers from abroad by regions (northeast, midwest, west, and south : 1981-2021 [5]. The second immigration dataset informs us of how many visas the United States government issued to foreigners [6].  The visas dataset includes all nonimmigrant visas issued, including temporary visitors coming for work, school, or tourism. Visas vary in duration depending on the reason they are issued. Lawful permanent residents, also known as "green card" holders, are excluded from the visas dataset.  And finally, we have another dataset for asylum claims granted by the U.S government  [7]. Usually, an individual would seek asylum when he or she is unable or unwilling to return to his or her home country due to persecution or a well-founded fear of persecution due to race, religion, nationality, membership in a particular social group, or political opinion. Asylum seekers apply either at a United States port of entry or from within the US..
+
+Since some of our Excel files we used have multiple tabs (spreadsheets), multiple header columns, and random notes embedded across multiple columns, we found it necessary to clean and reorganize some of the datasets. 
+
+\subsection{Brief description of data}
+hmm
 
 \section{Exploratory Data Analysis}
-\subsection{Data cleaning}
+\subsection{Data Cleaning}
 Cleaning of income data (tableA2.csv) has comprised several steps. Besides manual cleaning of the data, it has been explored for NAs, then they have been omitted. In general, the data was filtered, selected reshaped (melted) and merged (full_join) to efficiently produce visualizations.The class of certain columns were changed to numeric or to factor. Some of the column names were renamed. 
 
 The data sets 'home' and 'home_price' were basically clean. However, the most challenging part in working with those data was changing class type from character to date. Since usual codes did not work, other approaches were implemented and data were successfully visualized.   
 
-\subsection{Data summary}
+\subsection{Data Summary}
+
+The immigration dataset hst_mig_a_2.xlsx arranged the data in segments of year ranges and regions.  One single column, named "Mobility Period and Type of Migration," was used to show both the year ranges and the regions.  We had to separate the two into their own individual columns.
+
+The visas dataset visas_granted_usafacts.csv arranged the data in a wide fashion, with the row names at the far left column.  We selected the first row named "Years" and the second row named "Visas granted (People)."  We transposed the first and second rows into two columns named "Years" and "Visas".
+
+The asylums dataset asylum_claims_granted_usafacts.csv arranged the data in a wide fashion, with the row names at the far left column, just like what we saw in the visas dataset. We selected the first row named "Years" and the second row named "Asylum claims granted (People)." We transposed the first and second rows into two columns named "Years" and "Asylums".
+
+
+\subsection{Visually Exploring the Research Questions}
+graphs go here.
+
+\subsection{Findings and Explanations}
+Summary of the main takeaways from above section.
 
 ```{r, echo=FALSE, message=FALSE}
 rm(list = ls(all.names = TRUE))
@@ -37,6 +77,7 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 library(kableExtra)
+library(zoo)
 ```
 
 
@@ -134,8 +175,8 @@ home_price %>%
 
 
 
-\section{Future work}
-In a scope of this project, an interactive dashboard tool will be created to obtain answers to all our research questions. We will use R programming language and R Studio platform to materialize this dashboard. The dashboard will be hosted at Shinyapps server for ease of public access.
+\section{Future Work}
+In a scope of this project, an interactive dashboard tool will be created to obtain answers to all our research questions. We will use R programming language and R Studio platform to materialize this dashboard. The dashboard will be hosted at Shinyapps server for ease of public access. We will also look at income data utilizing a gif format.
 
 
 
