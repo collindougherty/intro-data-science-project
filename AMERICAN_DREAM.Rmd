@@ -164,7 +164,7 @@ combinedNetByEd_wide$year <- as.Date(combinedNetByEd_wide$year,format="%Y")
 suppressWarnings(combinedNetByEd_wide$networth <-as.numeric(combinedNetByEd_wide$networth, na.rm = TRUE))
 
 wealthByEd_chart <- ggplot(combinedNetByEd_wide, aes(x = year, y = networth, group = ed_house, color = ed_house )) + 
-  geom_line() + labs(x = "Year", y = "Median Networth", 
+  geom_line() + labs(x = "Year", y = "Median income ($)", 
                      color = "Education of Householder") + theme_bw()
 wealthByEd_chart + scale_y_continuous(limits = c(0,450000),labels = scales::comma)
 ```
