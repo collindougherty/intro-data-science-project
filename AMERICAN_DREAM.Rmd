@@ -196,7 +196,7 @@ home %>%
          scale_fill_brewer(palette = "Set2")
 ```
 
-```{r, figure12, echo=FALSE, message=FALSE, fig.cap="Average sales price of houses sold for the United States"}
+```{r, figure5, echo=FALSE, message=FALSE, fig.cap="Average sales price of houses sold for the United States"}
 home_price = read.csv('home_price.csv')
 home_price$Date = strptime(as.character(home_price$Date), "%m/%d/%Y") %>% 
   as.Date((home_price$Date), format = "%d-%m-%y")
@@ -215,7 +215,7 @@ Per capita personal income is total personal income divided by total midyear pop
 As shown in Figure 5 below, americans per capita personal income has doubled over the last two decades. As expected, states in the Mid-Atlantic, Northeast, and Hawaii are among states with highest per capita personal income. 
 
 
-```{r, figure15, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Per capita personal in the United States from 2000 to 2021"}
+```{r, figure6, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Per capita personal in the United States from 2000 to 2021"}
 
 df <- fread('dream.csv')
 df2 <- melt(df, id = c("GeoFips", "State")) %>%
@@ -259,7 +259,7 @@ p10
 
 Figure 6 below shows how extreme wealth is highly concentrated geographically. Nearly a third of nationwide wealth is held by families living in New York and California. Another 18 percent belongs to residents of Texas and Florida. In sum, this means that more than half of nationwide extreme wealth is held by the residents of just four states. These states are home to less than half (46 percent) of the U.S. population.
 
-```{r, Figure6, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Wealth Estimates from across the United States in 2022"}
+```{r, Figure7, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Wealth Estimates from across the United States in 2022"}
 
 wea = fread('share_wealth_us.csv')
 weaplot <- ggplot(data = wea, aes(x = reorder(State, SNW), y = SNW, fill = State)) + 
@@ -274,7 +274,7 @@ weaplot
 ```
 Assets by wealth percentile group distribution shows a higher interest for real state from the bottom 50% of the population compared to the top 0.1% that has corporate equities and mutual fund shares as main asset. Extremely wealthy households have a total different composition of wealth by asset type compared to households in the bottom percentile. 
 
-```{r, Figure7, echo=FALSE, message=FALSE, fig.cap="Assets by wealth percentile group in 2022"}
+```{r, Figure8, echo=FALSE, message=FALSE, fig.cap="Assets by wealth percentile group in 2022"}
 
 compo = fread('components.csv')
 compo <- rename(compo, Top1 = `Top 0.1%`, Top2 = `99-99.9%`, Top3 = `90-99%`, middle = `50-90%`, bottom50 = `Bottom 50%`)
@@ -287,7 +287,7 @@ ggplot(data = compomelt2, aes(x = percentile_group, y = percent, fill = `Wealth 
   labs(caption = "Top1 =Top 0.1%, Top2 =99-99.9%, Top3 =90-99%, middle =50-90%, bottom50 =Bottom 50%") 
 ```
 
-```{r, figure8, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household wealth over time for different ages"}
+```{r, figure9, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household wealth over time for different ages"}
 
 combinedNetByAge <- read_excel("./americandream/CombinedNetByAge.xlsx",col_names = TRUE, skip = 2)
 colnames(combinedNetByAge) <- c("age_house","2000","2002","2004","2005","2009","2010","2011","2013","2014","2015","2016","2017","2018","2019","2020")
@@ -310,7 +310,7 @@ wealthByAge_chart + scale_y_continuous(limits = c(0,350000), labels = scales::co
 
 
 
-```{r, figure9, echo=FALSE, message=FALSE, fig.cap="Real Median Income, US"}
+```{r, figure10, echo=FALSE, message=FALSE, fig.cap="Real Median Income, US"}
 real_median_income <- fread('americandream/MEHOINUSA672N.csv')
 median_income <- fread('americandream/MEFAINUSA646N.csv')
 income_lowest_50 <- fread('americandream/WFRBLB50107.csv')
@@ -327,7 +327,7 @@ income_share$Category <- ifelse(income_share$Category == "Top1", "Top 1%",
                                                                     income_share$Category))))
 ```
 
-```{r, figure10, echo=FALSE, message=FALSE, fig.cap="Median Income, US"}
+```{r, figure11, echo=FALSE, message=FALSE, fig.cap="Median Income, US"}
 median_income$DATE <- as.Date(median_income$DATE)
 median_income <- median_income %>% filter(DATE > "1999-01-01")
 ggplot(data = median_income, aes(x=DATE, y=MEFAINUSA646N)) + 
@@ -338,7 +338,7 @@ ggplot(data = median_income, aes(x=DATE, y=MEFAINUSA646N)) +
 
 Since 2000, median income growth has been substantial, nearly doubling from ~$50,000 to ~$90,000, with only a slight hiccup as a result of the Global Financial Crisis, before quickly picking up speed again. Similarly, there is a discernable dip as a result of the COVID-19 pandemic, before economic growth (and inflation) rapidly picked up. Overall, however, Americans have experiences long term secular income growth since 2000. 
 
-```{r, figure11, echo=FALSE, message=FALSE, fig.cap="Real Median Income, US"}
+```{r, figure12, echo=FALSE, message=FALSE, fig.cap="Real Median Income, US"}
 real_median_income$DATE <- as.Date(real_median_income$DATE)
 real_median_income <- real_median_income %>% filter(DATE > "1999-01-01")
 ggplot(data = real_median_income, aes(x=DATE, y=MEHOINUSA672N)) + 
@@ -351,7 +351,7 @@ While median income over time is in fact a useful and interesting metric, it is 
 
 The significant finding though is that despite inflation and major economic pressures from the GFC and COVID-19, Americans have still seen substantial real income growth, indicating an improving quality of life and the ability to pursue the American dream.
 
-```{r, figure12, echo=FALSE, message=FALSE, fig.cap="Share of Net Worth by Economic Class"}
+```{r, figure13, echo=FALSE, message=FALSE, fig.cap="Share of Net Worth by Economic Class"}
 income_share_summed1 <- aggregate(`Net worth` ~ Date + Category, data = income_share, sum)
 
 # Create a ggplot object with Bottom50 net worth over time
@@ -370,7 +370,7 @@ We see a similar pattern when it comes to Asset distribution, with the top 10% h
 Lastly, we see that lower and middle classes hold the lionshare of consumer credit. This points to some problems, as consumer credit often arises as a result of cash shortages. So lower classes may be achieving certain elements of the American Dream, although they are likely shackling themselves with debt that, long term, may be keeping them from advancing as far as they otherwise could.
 
 
-```{r, figure13, echo=FALSE, message=FALSE, fig.cap="Share of Consumer Credit by Economic Class"}
+```{r, figure14, echo=FALSE, message=FALSE, fig.cap="Share of Consumer Credit by Economic Class"}
 income_share_summed2 <- aggregate(`Consumer credit` ~ Date + Category, data = income_share, sum)
 # Create a ggplot object with Bottom50 net worth over time
 ggplot(income_share_summed2, aes(x = Date, y = `Consumer credit`, color = Category, group = Category)) +
@@ -379,7 +379,7 @@ ggplot(income_share_summed2, aes(x = Date, y = `Consumer credit`, color = Catego
   theme_minimal()
 ```
 
-```{r, figure14, echo=FALSE, message=FALSE, fig.cap="Share of Mortgages by Economic Class"}
+```{r, figure15, echo=FALSE, message=FALSE, fig.cap="Share of Mortgages by Economic Class"}
 income_share_summed3 <- aggregate(`Home mortgages` ~ Date + Category, data = income_share, sum)
 # Create a ggplot object with Bottom50 net worth over time
 ggplot(income_share_summed3, aes(x = Date, y = `Home mortgages`, color = Category, group = Category)) +
@@ -388,7 +388,7 @@ ggplot(income_share_summed3, aes(x = Date, y = `Home mortgages`, color = Categor
   theme_minimal()
 ```
 
-```{r, figure15, echo=FALSE, message=FALSE, fig.cap="Share of Assets by Economic Class"}
+```{r, figure16, echo=FALSE, message=FALSE, fig.cap="Share of Assets by Economic Class"}
 income_share_summed4 <- aggregate(Assets ~ Date + Category, data = income_share, sum)
 # Create a ggplot object with Bottom50 net worth over time
 ggplot(income_share_summed4, aes(x = Date, y = Assets, color = Category, group = Category)) +
