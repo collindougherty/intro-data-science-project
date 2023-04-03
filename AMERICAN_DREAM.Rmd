@@ -153,7 +153,7 @@ wealthByRace_chart + scale_y_continuous(limit = c(0,250000),labels = scales::com
 
 ```{r, figure3, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Real median household wealth over time for different Education"}
 
-combinedNetByEd <- read_excel("~/projects/americandream/CombinedNetByEd.xlsx",col_names = TRUE, skip = 1)
+combinedNetByEd <- read_excel("americandream/CombinedNetByEd.xlsx",col_names = TRUE, skip = 1)
 colnames(combinedNetByEd) <- c("ed_house","2000","2002","2004","2005","2009","2010","2011","2013","2014","2015","2016","2017","2018","2019","2020")
 
 combinedNetByEd_wide <- melt(combinedNetByEd, id='ed_house')
