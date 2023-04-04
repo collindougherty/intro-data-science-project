@@ -438,3 +438,20 @@ kable(df, align = "l")|>
  column_spec(2, width = "4cm")|>
  column_spec(3, width = "10cm")
 ```
+\section{References}
+[^1]: https://www2.census.gov/programs-surveys/demo/tables/wealth/2020/wealth-asset-ownership/Wealth_tables_dy2020.xlsx
+[^2]: https://www.census.gov/topics/income-poverty/wealth/data/tables.All.List_2110684178.html#list-tab-List_2110684178
+[^3]: https://www2.census.gov/programs-surveys/demo/tables/wealth/2020/wealth-asset-ownership/State_Wealth_tables_dy2020.xlsx
+[^4]: 
+https://www2.census.gov/programs-surveys/demo/tables/p60/276/tableA2.xlsx
+[^5]: https://www2.census.gov/programs-surveys/demo/tables/geographic-mobility/time-series/historic/hst_mig_a_2.xlsx
+[^6]: https://a.usafacts.org/api/v4/Metrics/csv/25906?&_ga=2.244264198.2048794940.1680399322-1530464110.1680399322&_gac=1.242036406.1680399340.EAIaIQobChMIhvewhoeK_gIVBWpvBB3bzgsgEAMYASAAEgJfGvD_BwE
+[^7]: https://a.usafacts.org/api/v4/Metrics/csv/13021?&_ga=2.218415642.2048794940.1680399322-1530464110.1680399322&_gac=1.3868548.1680399340.EAIaIQobChMIhvewhoeK_gIVBWpvBB3bzgsgEAMYASAAEgJfGvD_BwE
+[^8]: 
+https://www.investopedia.com/terms/a/american-dream.asp
+[^9]:
+https://fred.stlouisfed.org/series/MEHOINUSA672N
+[^10]: 
+https://fred.stlouisfed.org/series/MEFAINUSA646N
+[^11]: 
+https://fred.stlouisfed.org/series/WFRBLB50107
