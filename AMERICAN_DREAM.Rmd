@@ -421,7 +421,89 @@ ggplot(income_share_summed4, aes(x = Date, y = Assets, color = Category, group =
   labs(x = "Date", y = "Percentage of all Net Worth in US") +
   theme_minimal()
 ```
+One of the ways we can measure if people are still seeking the the American Dream is to look at the number of immigrants entering the United States. Using a line graph to visualize the number people who migrated to the United State from 2000 to 2021, as seen in Figure 18, we notice a decline of steady decline since 2019.
+```{r, figure18, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Immigration into the United States (Numbers in thousand)"}
+immigrations <-read.csv("hst_mig_a_2_ReOrganized.csv", header = TRUE)
+immigrantsDF <-  rename(immigrations, Region = TypeOfMigration) %>%
+                na.omit()
+ggplot(immigrantsDF, 
+        aes(x = MobilityPeriod, y = MoversFromAbroad, color = Region, group = Region)) +
+    geom_line() +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+    labs(x="Mobility Periods", y = "Immigrants")
+```
 
+
+Using a box plot graph to visualize the number people who migrated to the United State from 2000 to 2021, we show the median for each region for each the years as shown in Figure 19.  We also see a decreasing trend since 2019.
+```{r, figure19, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Immigration into the United States (Numbers in thousand)"}
+ggplot(data=immigrantsDF, aes(x=MobilityPeriod, y=MoversFromAbroad)) +
+        geom_point(aes(color=Region), alpha=0.2, position="jitter") +
+        geom_boxplot(outlier.size=0, alpha=0.1) +
+        theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+        theme(legend.position="right") +
+        labs(x="Mobility Periods", y = "Immigrants")
+```
+
+Using a bar chart to visualize the immigration data, we see the total number of immigrants entering the United States for each region from 2000 through 2021 in Figure 20.
+```{r, figure20, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Total Immigration (in thousands) from 2000 to 2021"}
+ggplot(immigrantsDF,aes(MoversFromAbroad,Region), label=Region)+
+  geom_bar(stat="identity", col="lightblue")+
+  labs(x="Immigrants", y = "Region")+
+  coord_flip()
+```
+
+
+To help explain the downward trend of immigration, we decided to look at the number of U.S visas issued to foreigners. Just as we suspected, as seen in Figure 21, our visualization of the visas dataset confirms a correlation between the number of visas issued and the number of immigrants entering the United States.
+```{r, figure21, echo=FALSE, message=FALSE,warning=FALSE,fig.cap="Visas Issued by the United States from 2000 to 2021 (Number in thousands)"}
+visa <-read.csv("visas_granted_usafacts.csv", header = FALSE)
+visa <- visa[1:2,] # grab only the first 2 rows
+transposedVisa <- t(visa) %>%
+                na.omit() 
+rownames(transposedVisa)<-NULL #remove row names
+colnames(transposedVisa) = transposedVisa[1,] # copy first row to header
+transposedVisa <- transposedVisa[-1,] # delete the first row since it was converted to header
+transposedVisa <- as.data.frame(transposedVisa)
+i <- c(1, 2)  # columns to convert from string to number and trim white spaces
+transposedVisa[ , i] <- sapply(transposedVisa[ , i], 
+                                function(x) as.numeric(str_remove_all(x," ")))
+transposedVisa <-  rename(transposedVisa, Visas = "Visas granted (People)") %>%
+                na.omit()
+visaDF <- transposedVisa %>%
+        na.omit() %>%
+        filter(Years >= 2000) %>%
+        mutate(Visas = Visas/1000)
+ggplot(visaDF, aes(Years, Visas)) +
+      geom_line(lwd=1) +
+      theme_bw() +
+      labs(x="Years", y = "Visas")
+```
+
+
+To further explain the downward trend of immigration, we decided to look at the number of asylum claims the U.S granted to foreigners. Just as we suspected, as shown in Figure 22, our visualization of the asylums dataset confirms a correlation between the number of asylums claims granted and the number of immigrants entering the United States.
+```{r, figure22, echo=FALSE, message=FALSE,warning=FALSE, fig.cap="Asylums Granted by the United States from 2000 to 2021 (Number in thousands)"}
+asylum <-read.csv("asylum_claims_granted_usafacts.csv", header = FALSE)
+asylum <- asylum[1:2,] # grab only the first 2 rows
+transposedAsylums <- t(asylum) %>%
+                na.omit() 
+rownames(transposedAsylums)<-NULL #remove row names
+colnames(transposedAsylums) = transposedAsylums[1,] # copy first row to header
+transposedAsylums <- transposedAsylums[-1,] # delete the first row since it was converted to header
+transposedAsylums <- as.data.frame(transposedAsylums)
+i <- c(1, 2)  # columns to convert from string to number and trim white spaces
+transposedAsylums[ , i] <- sapply(transposedAsylums[ , i], 
+                                function(x) as.numeric(str_remove_all(x," ")))
+transposedAsylums <-  rename(transposedAsylums, Asylums = "Asylum claims granted (People)") %>%
+                              na.omit()
+asylumDF <- transposedAsylums %>%
+        na.omit() %>%
+        filter(Years >= 2000) %>%
+        mutate(Asylums = Asylums/1000)
+ggplot(asylumDF, aes(Years, Asylums)) +
+      geom_line(lwd=1) +
+      theme_bw() +
+      labs(x="Years", y = "Asylums")
+```
 
 
 
