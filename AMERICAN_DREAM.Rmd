@@ -27,12 +27,16 @@ Encouraging aspiration: Examining the American Dream and upward mobility can als
 For some people, the American Dream could mean achieving financial success, owning a home, or attaining a certain level of social status. However, there are others who see the American Dream as more than just material success; they view it as the ability to live a fulfilling life, to pursue their passions and dreams, and to have a sense of purpose and meaning in life. 
 
 
-\subsection{Research Question(s)}
+\subsection{Research question (s)}
 By the end of this research paper, we plan to shed some light on the following questions:
-How has the upward mobility among diverse populations in the United States changed from 2000 to 2021?
-Are Americans attaining wealth?
-Are Americans achieving the dream of home ownership? 
-Are immigrants still seeking entry into America? 
+\begin{enumerate}
+\item How has the upward mobility among diverse populations in the United States changed from 2000 to 2021? 
+  \begin{itemize}
+    \item Are Americans attaining wealth?
+    \item Are Americans achieving the dream of home ownership?
+  \end{itemize}
+\item Are immigrants still seeking entry into America? 
+\end{enumerate}
 
 
 \section{Data}
