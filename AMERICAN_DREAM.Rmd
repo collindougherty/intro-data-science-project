@@ -72,7 +72,7 @@ The walth data was in several different file types spread accross the years. The
 \subsection{Findings and Explanations}
 talk about graphs here. cite figure #s
 
-```{r, echo=FALSE, message=FALSE}
+```{r, load-packages, setup, include=FALSE}
 rm(list = ls(all.names = TRUE))
 cat("\014")
 library(data.table)
