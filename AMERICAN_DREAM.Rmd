@@ -49,7 +49,7 @@ For immigration data, we will borrow from three different datasets.  The first d
 \subsection{Data background and sources}
 
 \subsection{Brief description of data}
-
+Census data provides valuable information about various demographic and socioeconomic factors of a population, including wealth, home ownership, income, and migration. Within the datasets contained at census.gov we used a subset including: wealth, home ownership, income, and migration. 
 
 \section{Exploratory Data Analysis}
 \subsection{Data cleaning}
